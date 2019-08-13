@@ -1,5 +1,6 @@
 import cmd, sys
-from turtle import *
+from turtle import forward, right, left, goto, home, circle, color, reset, bye, heading, position
+
 
 class TurtleShell(cmd.Cmd):
     intro = 'Welcome to the turtle shell.   Type help or ? to list commands.\n'
