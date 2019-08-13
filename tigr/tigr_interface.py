@@ -1,8 +1,5 @@
 from abc import ABC, abstractmethod
 
-from turtle import pen, down, forward, home
-
-
 """ Tiny Interpreted GRaphic = TIGR
 Keep the interfaces defined below in your work.
  """
