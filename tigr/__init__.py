@@ -3,7 +3,6 @@ def main():
     # support stdin
     # default turtle_worker
     # before execute input instructs, draw a star as welcome figure
-    from shell import cmd
+    import tigr.shell.cmd as cmd
     import turtle
     cmd.Shell(turtle).cmdloop()
-    pass
