@@ -4,5 +4,6 @@ def main():
     # default turtle_worker
     # before execute input instructs, draw a star as welcome figure
     from shell import cmd
-    cmd.TurtleShell().cmdloop()
+    import turtle
+    cmd.Shell(turtle).cmdloop()
     pass

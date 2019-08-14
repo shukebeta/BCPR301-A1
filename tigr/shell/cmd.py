@@ -1,50 +1,52 @@
 import cmd, sys
-from turtle import forward, right, left, goto, home, circle, color, reset, bye, heading, position
 
-
-class TurtleShell(cmd.Cmd):
+class Shell(cmd.Cmd):
     intro = 'Welcome to the turtle shell.   Type help or ? to list commands.\n'
     prompt = '(turtle) '
     file = None
 
+    def __init__(self, drawer):
+        super(Shell, self).__init__()
+        self.drawer = drawer
+
     # ----- basic turtle commands -----
     def do_forward(self, arg):
         'Move the turtle forward by the specified distance:  FORWARD 10'
-        forward(*parse(arg))
+        self.drawer.forward(*parse(arg))
     def do_right(self, arg):
         'Turn turtle right by given number of degrees:  RIGHT 20'
-        right(*parse(arg))
+        self.drawer.right(*parse(arg))
     def do_left(self, arg):
         'Turn turtle left by given number of degrees:  LEFT 90'
-        left(*parse(arg))
+        self.drawer.left(*parse(arg))
     def do_goto(self, arg):
         'Move turtle to an absolute position with changing orientation.  GOTO 100 200'
-        goto(*parse(arg))
+        self.drawer.goto(*parse(arg))
     def do_home(self, arg):
         'Return turtle to the home position:  HOME'
-        home()
+        self.drawer.home()
     def do_circle(self, arg):
         'Draw circle with given radius an options extent and steps:  CIRCLE 50'
-        circle(*parse(arg))
+        self.drawer.circle(*parse(arg))
     def do_position(self, arg):
         'Print the current turtle position:  POSITION'
-        print('Current position is %d %d\n' % position())
+        print('Current position is %d %d\n' % self.drawer.position())
     def do_heading(self, arg):
         'Print the current turtle heading in degrees:  HEADING'
-        print('Current heading is %d\n' % (heading(),))
+        print('Current heading is %d\n' % (self.drawer.heading(),))
     def do_color(self, arg):
         'Set the color:  COLOR BLUE'
-        color(arg.lower())
+        self.drawer.color(arg.lower())
     def do_undo(self, arg):
         'Undo (repeatedly) the last turtle action(s):  UNDO'
     def do_reset(self, arg):
         'Clear the screen and return turtle to center:  RESET'
-        reset()
+        self.drawer.reset()
     def do_bye(self, arg):
         'Stop recording, close the turtle window, and exit:  BYE'
         print('Thank you for using Turtle')
         self.close()
-        bye()
+        self.drawer.bye()
         return True
 
     # ----- record and playback -----
@@ -71,4 +73,4 @@ def parse(arg):
     return tuple(map(int, arg.split()))
 
 if __name__ == '__main__':
-    TurtleShell().cmdloop()
+    Shell().cmdloop()

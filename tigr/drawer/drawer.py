@@ -15,7 +15,7 @@ class Drawer(AbstractDrawer):
 
     def go_along(self, along):
         x, y = self.pos
-        self.worker.goto(x+along, y)
+        self.worker.goto(x + along, y)
 
     def go_down(self, down):
         x, y = self.pos
