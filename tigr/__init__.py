@@ -1,3 +1,4 @@
+
 def main():
     # default interactive mode
     # support stdin
@@ -5,4 +6,6 @@ def main():
     # before execute input instructs, draw a star as welcome figure
     import tigr.shell.cmd as cmd
     import turtle
-    cmd.Shell(turtle).cmdloop()
+
+    from tigr.drawer.drawer import Drawer
+    cmd.Shell(Drawer(turtle)).cmdloop()

@@ -2,49 +2,36 @@ import cmd, sys
 
 class Shell(cmd.Cmd):
     intro = 'Welcome to the turtle shell.   Type help or ? to list commands.\n'
-    prompt = '(turtle) '
     file = None
 
     def __init__(self, drawer):
-        super(Shell, self).__init__()
         self.drawer = drawer
+        self.prompt = 'current drawer: ' + drawer.worker.__name__ + '> '
+        super(Shell, self).__init__()
 
     # ----- basic turtle commands -----
-    def do_forward(self, arg):
-        'Move the turtle forward by the specified distance:  FORWARD 10'
-        self.drawer.forward(*parse(arg))
-    def do_right(self, arg):
-        'Turn turtle right by given number of degrees:  RIGHT 20'
-        self.drawer.right(*parse(arg))
-    def do_left(self, arg):
-        'Turn turtle left by given number of degrees:  LEFT 90'
-        self.drawer.left(*parse(arg))
-    def do_goto(self, arg):
-        'Move turtle to an absolute position with changing orientation.  GOTO 100 200'
-        self.drawer.goto(*parse(arg))
-    def do_home(self, arg):
-        'Return turtle to the home position:  HOME'
-        self.drawer.home()
-    def do_circle(self, arg):
-        'Draw circle with given radius an options extent and steps:  CIRCLE 50'
-        self.drawer.circle(*parse(arg))
-    def do_position(self, arg):
-        'Print the current turtle position:  POSITION'
-        print('Current position is %d %d\n' % self.drawer.position())
-    def do_heading(self, arg):
-        'Print the current turtle heading in degrees:  HEADING'
-        print('Current heading is %d\n' % (self.drawer.heading(),))
-    def do_color(self, arg):
-        'Set the color:  COLOR BLUE'
-        self.drawer.color(arg.lower())
-    def do_undo(self, arg):
-        'Undo (repeatedly) the last turtle action(s):  UNDO'
-    def do_reset(self, arg):
-        'Clear the screen and return turtle to center:  RESET'
-        self.drawer.reset()
+
+    def do_select_pen(self, arg):
+        self.drawer.select_pen
+
+    def do_penup(self, arg):
+        self.drawer.pen_up()
+
+    def do_pendown(self, arg):
+        self.drawer.pen_down()
+
+    def do_go_along(self, arg):
+        self.drawer.go_along(*parse(arg))
+
+    def do_go_down(self, arg):
+        self.drawer.go_down(*parse(arg))
+
+    def do_draw_line(self, arg):
+        self.drawer.draw_line(*parse(arg))
+
     def do_bye(self, arg):
         'Stop recording, close the turtle window, and exit:  BYE'
-        print('Thank you for using Turtle')
+        print(f'Thank you for using {self.drawer.worker.__name__}')
         self.close()
         self.drawer.bye()
         return True
