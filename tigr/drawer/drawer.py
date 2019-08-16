@@ -17,27 +17,15 @@ class Drawer(AbstractDrawer):
         print('pen is up')
 
     def go_along(self, along):
-        if along > 0:
-            heading = 0
-        else:
-            heading = 180
-        self.worker.setheading(heading)
-        self.worker.forward(abs(along))
+        self.worker.go_along(along)
         print(f'go along X: {along}')
 
     def go_down(self, down):
-        if down > 0:
-            heading = 90
-        else:
-            heading = 270
-        self.worker.setheading(heading)
-        self.worker.forward(abs(down))
+        self.worker.go_down(down)
         print(f'go along Y: {down}')
 
     def draw_line(self, direction, distance):
-        self.pen_down()
-        self.worker.setheading(direction)
-        self.worker.forward(distance)
+        self.worker.draw_line(direction, distance)
         print(f'draw a line with length: {distance}, direction: {direction} degree.' )
 
     def bye(self):

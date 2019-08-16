@@ -8,4 +8,10 @@ def main():
     import turtle
 
     from tigr.drawer.drawer import Drawer
-    cmd.Shell(Drawer(turtle)).cmdloop()
+
+    if 0:
+        from tigr.drawer.tkinter_worker import TkinterWorker as Worker
+    else:
+        from tigr.drawer.turtle_worker import TurtleWorker as Worker
+
+    cmd.Shell(Drawer(Worker())).cmdloop()
