@@ -35,3 +35,4 @@ class TurtleWorker(Turtle):
 
     def set_speed(self, speed):
         pass
+

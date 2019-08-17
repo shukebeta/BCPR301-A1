@@ -1,13 +1,25 @@
 import cmd, sys
 
 class Shell(cmd.Cmd):
-    intro = 'Welcome to the turtle shell.   Type help or ? to list commands.\n'
+    intro = 'Welcome to the tigr shell.   Type help or ? to list commands.\n'
     file = None
 
     def __init__(self, drawer):
         self.drawer = drawer
         self.prompt = 'current drawer: ' + drawer.worker.__name__ + '> '
-        super(Shell, self).__init__()
+        super().__init__()
+        self.alias_list = {
+            'quit': self.do_bye,
+            'd': self.do_pendown,
+            'u': self.do_penup,
+        }
+
+    def default(self, line):
+        cmd, arg, line = self.parseline(line)
+        if cmd in self.alias_list:
+            return self.alias_list[cmd](arg)
+        else:
+            super().default(line)
 
     # ----- basic turtle commands -----
 
@@ -38,6 +50,14 @@ class Shell(cmd.Cmd):
         self.close()
         self.drawer.bye()
         return True
+
+    # def __getattr__(self, item):
+    #     alias = {
+    #         'do_quit': self.do_bye
+    #     }
+    #     if item in alias:
+    #         return alias[item]
+
 
     # ----- record and playback -----
     def do_record(self, arg):
