@@ -1,5 +1,5 @@
 
-def main():
+def main(engine='turtle'):
     # default interactive mode
     # support stdin
     # default turtle_worker
@@ -8,7 +8,7 @@ def main():
 
     from tigr.drawer.drawer import Drawer
 
-    if 0:
+    if engine != 'turtle':
         from tigr.drawer.tkinter_worker import TkinterWorker as Worker
     else:
         from tigr.drawer.turtle_worker import TurtleWorker as Worker

@@ -26,6 +26,9 @@ class TurtleWorker(Turtle):
         self.setheading(direction)
         self.forward(distance)
 
+    def bye(self):
+        pass
+
 if __name__ == '__main__':
     root = TurtleWorker()
     root.mainloop()
