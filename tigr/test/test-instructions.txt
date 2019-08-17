@@ -1,0 +1,5 @@
+go_along 100
+go_down 100
+go_along -100
+go_down -100
+bye

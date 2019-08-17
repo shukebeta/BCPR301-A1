@@ -1,4 +1,5 @@
 from turtle import Turtle
+import time
 
 class TurtleWorker(Turtle):
     def __init__(self):
@@ -26,9 +27,11 @@ class TurtleWorker(Turtle):
         self.setheading(direction)
         self.forward(distance)
 
-    def bye(self):
-        pass
+    def set_pen_color(self, color):
+        self.pencolor(color)
 
-if __name__ == '__main__':
-    root = TurtleWorker()
-    root.mainloop()
+    def bye(self):
+        time.sleep(0.5)
+
+    def set_speed(self, speed):
+        pass

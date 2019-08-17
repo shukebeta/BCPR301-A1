@@ -16,16 +16,19 @@ class Drawer(AbstractDrawer):
         self.worker.penup()
         print('pen is up')
 
+    def pen_color(self, color):
+        self.worker.set_pen_color(color)
+
     def go_along(self, along):
-        self.worker.go_along(along)
+        self.worker.go_along(int(along))
         print(f'go along X: {along}')
 
     def go_down(self, down):
-        self.worker.go_down(down)
+        self.worker.go_down(int(down))
         print(f'go along Y: {down}')
 
     def draw_line(self, direction, distance):
-        self.worker.draw_line(direction, distance)
+        self.worker.draw_line(int(direction), int(distance))
         print(f'draw a line with length: {distance}, direction: {direction} degree.' )
 
     def bye(self):

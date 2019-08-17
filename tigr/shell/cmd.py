@@ -20,6 +20,9 @@ class Shell(cmd.Cmd):
     def do_pendown(self, arg):
         self.drawer.pen_down()
 
+    def do_pencolor(self, arg):
+        self.drawer.pen_color(*parse(arg))
+
     def do_go_along(self, arg):
         self.drawer.go_along(*parse(arg))
 
@@ -57,4 +60,4 @@ class Shell(cmd.Cmd):
 
 def parse(arg):
     'Convert a series of zero or more numbers to an argument tuple'
-    return tuple(map(int, arg.split()))
+    return tuple(arg.split())

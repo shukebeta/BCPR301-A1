@@ -1,5 +1,5 @@
 
-def main(engine='turtle'):
+def main(arguments):
     # default interactive mode
     # support stdin
     # default turtle_worker
@@ -8,9 +8,11 @@ def main(engine='turtle'):
 
     from tigr.drawer.drawer import Drawer
 
-    if engine != 'turtle':
+    if arguments['--engine'] != 'turtle':
         from tigr.drawer.tkinter_worker import TkinterWorker as Worker
     else:
         from tigr.drawer.turtle_worker import TurtleWorker as Worker
 
-    cmd.Shell(Drawer(Worker())).cmdloop()
+    worker = Worker()
+    worker.set_speed(int(arguments['--speed']))
+    cmd.Shell(Drawer(worker)).cmdloop()
