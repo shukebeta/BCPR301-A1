@@ -81,6 +81,9 @@ class Drawer(AbstractDrawer):
         self.worker.go_down(int(down))
         debug(f'go along Y: {down}')
 
+    def goto(self, x, y):
+        self.worker.goto(x, y)
+
     def forward(self, distance):
         self.worker.forward(distance)
         debug(f'go along {distance} with direction {self.worker.heading}')

@@ -8,6 +8,7 @@ class TurtleWorker(Turtle):
         self.pencolor(pencolor)
         self.speed(speed)
         self.pensize(int(pensize))
+        self.goto(400, 300)
 
     def go_down(self, length):
         if length > 0:
@@ -29,6 +30,20 @@ class TurtleWorker(Turtle):
         self.pendown()
         self.setheading(direction)
         self.forward(distance)
+
+    def goto(self, x, y):
+        x -= 400
+        if y > 300:
+            y -= 2 * y - 300
+        else:
+            y = 300 - y
+
+        if self.pen()['pendown']:
+            self.penup()
+            super().goto(x, y)
+            self.pendown()
+        else:
+            super().goto(x, y)
 
     def speed(self, speed):
         speed = int(speed)

@@ -41,6 +41,9 @@ class Shell(cmd.Cmd):
     def do_go_along(self, arg):
         self.drawer.go_along(*parse_int(arg))
 
+    def do_goto(self, arg):
+        self.drawer.goto(*parse_int(arg))
+
     def do_go_down(self, arg):
         self.drawer.go_down(*parse_int(arg))
 
@@ -53,7 +56,6 @@ class Shell(cmd.Cmd):
     def do_bye(self, arg):
         'Stop recording, close the turtle window, and exit:  BYE'
         print(f'Thank you for using {self.drawer.worker.__name__}')
-        self.close()
         self.drawer.bye()
         return True
 
@@ -65,24 +67,6 @@ class Shell(cmd.Cmd):
     #         return alias[item]
 
 
-    # ----- record and playback -----
-    def do_record(self, arg):
-        'Save future commands to filename:  RECORD rose.cmd'
-        self.file = open(arg, 'w')
-    def do_playback(self, arg):
-        'Playback commands from a file:  PLAYBACK rose.cmd'
-        self.close()
-        with open(arg) as f:
-            self.cmdqueue.extend(f.read().splitlines())
-    def precmd(self, line):
-        line = line.lower()
-        if self.file and 'playback' not in line:
-            print(line, file=self.file)
-        return line
-    def close(self):
-        if self.file:
-            self.file.close()
-            self.file = None
 
 def parse(arg):
     'Convert a series of zero or more numbers to an argument tuple'
