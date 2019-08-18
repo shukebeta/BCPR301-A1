@@ -89,6 +89,11 @@ class TkinterWorker(tk.Tk):
         super().update()
         time.sleep(self.wait)
 
+    def draw_line(self, direction, distance):
+        # to get same behaviour as turtle
+        direction += 90
+        x, y = self._calc_target_pos(direction, distance)
+        self._draw_line(x, y)
 
     def _draw_line(self, x, y):
         self.canvas.create_line(self.pos['x'], self.pos['y'], x, y, fill=self.pencolor, width=self.pensize)
