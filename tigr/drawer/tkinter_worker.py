@@ -7,9 +7,9 @@ class TkinterWorker(tk.Tk):
         super().__init__()
         self.title("Tkinter drawer")
         self.geometry("800x600")
-        self.pencolor = str(pencolor)
-        self.pensize = int(pensize)
-        self.wait = self.set_speed(int(speed))
+        self._pencolor = str(pencolor)
+        self._pensize = int(pensize)
+        self.wait = self.speed(int(speed))
 
         self.canvas = tk.Canvas(self, width=800, height=600)
         self.canvas.pack(side=tk.TOP, fill=tk.X)
@@ -33,6 +33,9 @@ class TkinterWorker(tk.Tk):
     def pendown(self):
         self._pendown = True
         self.debug()
+
+    def pensize(self, size):
+        self._pensize = int(size)
 
     def go_down(self, length):
         if length > 0:
@@ -73,13 +76,13 @@ class TkinterWorker(tk.Tk):
         self.update()
         time.sleep(0.5)
 
-    def set_speed(self, speed):
+    def speed(self, speed):
         wait = 1 / speed
         if speed <= 0: wait = 1
         self.wait = wait
 
-    def set_pencolor(self, pencolor):
-        self.pencolor = pencolor
+    def pencolor(self, pencolor):
+        self._pencolor = pencolor
 
     def debug(self):
         # print(self.pos)
@@ -92,11 +95,12 @@ class TkinterWorker(tk.Tk):
     def draw_line(self, direction, distance):
         # to get same behaviour as turtle
         direction += 90
+        self.heading = direction
         x, y = self._calc_target_pos(direction, distance)
         self._draw_line(x, y)
 
     def _draw_line(self, x, y):
-        self.canvas.create_line(self.pos['x'], self.pos['y'], x, y, fill=self.pencolor, width=self.pensize)
+        self.canvas.create_line(self.pos['x'], self.pos['y'], x, y, fill=self._pencolor, width=self._pensize)
         self.goto(x, y)
         self.update()
         self.debug()

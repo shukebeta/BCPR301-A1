@@ -33,16 +33,22 @@ class Shell(cmd.Cmd):
         self.drawer.pen_down()
 
     def do_pencolor(self, arg):
-        self.drawer.pen_color(*parse(arg))
+        self.drawer.pencolor(*parse(arg))
+
+    def do_pensize(self, arg):
+        self.drawer.pensize(*parse_int(arg))
 
     def do_go_along(self, arg):
-        self.drawer.go_along(*parse(arg))
+        self.drawer.go_along(*parse_int(arg))
 
     def do_go_down(self, arg):
-        self.drawer.go_down(*parse(arg))
+        self.drawer.go_down(*parse_int(arg))
+
+    def do_forward(self, arg):
+        self.drawer.forward(*parse_int(arg))
 
     def do_draw_line(self, arg):
-        self.drawer.draw_line(*parse(arg))
+        self.drawer.draw_line(*parse_int(arg))
 
     def do_bye(self, arg):
         'Stop recording, close the turtle window, and exit:  BYE'
@@ -81,3 +87,6 @@ class Shell(cmd.Cmd):
 def parse(arg):
     'Convert a series of zero or more numbers to an argument tuple'
     return tuple(arg.split())
+
+def parse_int(arg):
+    return tuple(map(int, arg.split()))
