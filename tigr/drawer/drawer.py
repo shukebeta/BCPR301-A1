@@ -17,7 +17,7 @@ class Drawer(AbstractDrawer):
         print('pen is up')
 
     def pen_color(self, color):
-        self.worker.set_pen_color(color)
+        self.worker.set_pencolor(color)
 
     def go_along(self, along):
         self.worker.go_along(int(along))

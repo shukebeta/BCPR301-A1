@@ -17,12 +17,12 @@ In this project, we plan to implement below features:
 It is a shell application which supports multiple drawer engine, include Turtle, TkInter.
 
 - This shell supports below command line switches:
-    - --pen-size: default 'default'
-    - --pen-color: default 'black'
-    - -s --speed: default 5 (1 slowest 9 fastest)
-    - -e or --engine: default 'turtle'
-    - -c or --config-file: default 'config.ini'
-    - --run-test
+    - --pensize 2: default 1
+    - --pencolor red: default 'black'
+    - -s --speed 999: default 7 (0 slowest 9999 fastest)
+    - -e or --engine tkinter: default 'turtle'
+    - -c or --config 1.ini
+    - --runtest
 
 - This shell support two running mode
 
@@ -43,9 +43,9 @@ It is a shell application which supports multiple drawer engine, include Turtle,
 - Usage:
     - python tigr.py # interactive mode, with default parameters
     - python tigr.py < instructions.txt
-    - python tigr.py --pen-color=red 
+    - python tigr.py --pencolor=red 
     - python tigr.py --engine=tkinter
-    - ptyhon tigr.py --run-test
+    - ptyhon tigr.py --runtest
     - python tigr.py ins1.txt ins2.txt ins3.txt
          
  

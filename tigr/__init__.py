@@ -13,6 +13,5 @@ def main(arguments):
     else:
         from tigr.drawer.turtle_worker import TurtleWorker as Worker
 
-    worker = Worker()
-    worker.set_speed(int(arguments['--speed']))
+    worker = Worker(speed=int(arguments['--speed']), pencolor=arguments['--pencolor'])
     cmd.Shell(Drawer(worker)).cmdloop()

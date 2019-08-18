@@ -3,16 +3,18 @@ import math
 import time
 
 class TkinterWorker(tk.Tk):
-    def __init__(self):
+    def __init__(self, speed=6, pencolor='black', pensize=2):
         super().__init__()
         self.title("Tkinter drawer")
         self.geometry("800x600")
-        self.pen_color = 'black'
+        self.pencolor = str(pencolor)
+        self.pensize = int(pensize)
+        self.wait = self.set_speed(int(speed))
 
         self.canvas = tk.Canvas(self, width=800, height=600)
         self.canvas.pack(side=tk.TOP, fill=tk.X)
         self.home_pos = (400, 300)
-        self.current_pos = {
+        self.pos = {
             'x': 400,
             'y': 300
         }
@@ -52,8 +54,8 @@ class TkinterWorker(tk.Tk):
         self.debug()
 
     def goto(self, x, y):
-        self.current_pos['x'] = x
-        self.current_pos['y'] = y
+        self.pos['x'] = x
+        self.pos['y'] = y
 
         self.update()
         self.debug()
@@ -76,12 +78,8 @@ class TkinterWorker(tk.Tk):
         if speed <= 0: wait = 1
         self.wait = wait
 
-    def set_pen_color(self, pen_color):
-        self.pen_color = pen_color
-
-    @property
-    def pos(self):
-        return self.current_pos
+    def set_pencolor(self, pencolor):
+        self.pencolor = pencolor
 
     def debug(self):
         # print(self.pos)
@@ -93,14 +91,14 @@ class TkinterWorker(tk.Tk):
 
 
     def _draw_line(self, x, y):
-        self.canvas.create_line(self.current_pos['x'], self.current_pos['y'], x, y, fill=self.pen_color)
+        self.canvas.create_line(self.pos['x'], self.pos['y'], x, y, fill=self.pencolor, width=self.pensize)
         self.goto(x, y)
         self.update()
         self.debug()
 
     def _calc_target_pos(self, direction, length):
-        return (self.current_pos['x'] + math.sin(math.radians(direction)) * length,
-                self.current_pos['y'] + math.cos(math.radians(direction)) * length)
+        return (self.pos['x'] + math.sin(math.radians(direction)) * length,
+                self.pos['y'] + math.cos(math.radians(direction)) * length)
 
 if __name__ == '__main__':
     root = TkinterWorker()

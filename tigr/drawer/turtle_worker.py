@@ -2,9 +2,12 @@ from turtle import Turtle
 import time
 
 class TurtleWorker(Turtle):
-    def __init__(self):
+    def __init__(self, speed=6, pencolor='black', pensize=2):
         super().__init__()
         self.__name__ = 'turtle'
+        self.set_pencolor(pencolor)
+        self.set_speed(speed)
+        self.pensize(int(pensize))
 
     def go_down(self, length):
         if length > 0:
@@ -27,8 +30,16 @@ class TurtleWorker(Turtle):
         self.setheading(direction)
         self.forward(distance)
 
-    def set_pen_color(self, color):
+    def set_pencolor(self, color):
         self.pencolor(color)
+
+    def set_speed(self, speed):
+        speed = int(speed)
+        if speed > 10:
+            speed = 0
+        elif speed <= 0:
+            speed = 1
+        self.speed(speed)
 
     def bye(self):
         time.sleep(0.5)
