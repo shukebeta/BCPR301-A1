@@ -24,7 +24,7 @@ class Shell(cmd.Cmd):
     # ----- basic turtle commands -----
 
     def do_select_pen(self, arg):
-        self.drawer.select_pen
+        self.drawer.select_pen(*parse_int(arg))
 
     def do_penup(self, arg):
         self.drawer.pen_up()

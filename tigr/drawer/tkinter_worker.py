@@ -19,12 +19,12 @@ class TkinterWorker(tk.Tk):
             'y': 300
         }
         self._pendown = True
-        self.heading = 90
+        self._heading = 90
         self.__name__ = 'tkinter'
         self.wait = 0.5 # seconds
 
     def setheading(self, direction):
-        self.heading = direction
+        self._heading = direction
 
     def penup(self):
         self._pendown = False
@@ -47,7 +47,7 @@ class TkinterWorker(tk.Tk):
         self.debug()
 
     def forward(self, length):
-        x, y = self._calc_target_pos(self.heading, length)
+        x, y = self._calc_target_pos(self._heading, length)
         if self._pendown:
             self._draw_line(x, y)
         else:
@@ -95,7 +95,7 @@ class TkinterWorker(tk.Tk):
     def draw_line(self, direction, distance):
         # to get same behaviour as turtle
         direction += 90
-        self.heading = direction
+        self._heading = direction
         x, y = self._calc_target_pos(direction, distance)
         self._draw_line(x, y)
 
@@ -108,6 +108,9 @@ class TkinterWorker(tk.Tk):
     def _calc_target_pos(self, direction, length):
         return (self.pos['x'] + math.sin(math.radians(direction)) * length,
                 self.pos['y'] + math.cos(math.radians(direction)) * length)
+    @property
+    def heading(self):
+        return self._heading - 90
 
 if __name__ == '__main__':
     root = TkinterWorker()
