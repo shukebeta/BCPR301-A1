@@ -1,13 +1,14 @@
 """Tigr.
 
 Usage:
-  tigr.py [FILE ...] [-e tkinter] [-s 5] [--pencolor black] [--pensize 1] [-c c.ini]
+  tigr.py [FILES ...] [-e tkinter] [-s 5] [--pencolor black] [--pensize 1] [-c c.ini] [-i 1]
 
 Options:
   -h --help                  Show this screen.
   -e turtle --engine turtle  Specify the drawer engine, tkinter or turtle. [default: turtle]
   -c 1.ini --config 1.ini    Specify the ini config file name
   -s 5 --speed 5             Specify the drawer speed, 1 slowest, 9 fastest [default: 5]
+  -i 1 --interactive 1       Specify if enter interactive mode when the script files were executed done [default: 0]
   --pencolor black           Specify pen color [default: black]
   --pensize 1                Specify pen size [default: 1]
   --version                  Show version
@@ -50,7 +51,6 @@ if __name__ == '__main__':
                 print(f'invalid config file: {config_file}', 'unrecognized ext name')
         else:
             print(f'config file does not exist: {config_file}')
-
 
     import tigr
     tigr.main(arguments)

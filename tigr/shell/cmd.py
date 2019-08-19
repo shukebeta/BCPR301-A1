@@ -12,6 +12,7 @@ class Shell(cmd.Cmd):
             'quit': self.do_bye,
             'd': self.do_pendown,
             'u': self.do_penup,
+            'dl': self.do_draw_line,
         }
 
     def default(self, line):

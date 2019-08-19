@@ -2,6 +2,8 @@ import sys
 sys.path.extend(['../..', '..'])
 
 from tigr.tigr_interface import AbstractParser
+
+
 class RegexParser(AbstractParser):
     def __init__(self, drawer):
         super().__init__(drawer)
@@ -70,11 +72,6 @@ class RegexParser(AbstractParser):
                 self.do(cmd.command)
             else:
                 print(cmd.error_message)
-
-        import time
-        time.sleep(0.5)
-        import tigr.shell.cmd as cmd
-        cmd.Shell(self.drawer).cmdloop()
 
     def do(self, command):
         if command['cmd'] in self.draw_degrees:

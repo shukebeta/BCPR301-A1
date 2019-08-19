@@ -2,6 +2,7 @@ import tkinter as tk
 import math
 import time
 
+
 class TkinterWorker(tk.Tk):
     def __init__(self, speed=6, pencolor='black', pensize=2):
         super().__init__()
