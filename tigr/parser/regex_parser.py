@@ -1,3 +1,6 @@
+import sys
+sys.path.extend(['../..', '..'])
+
 from tigr.tigr_interface import AbstractParser
 class RegexParser(AbstractParser):
     def __init__(self, drawer):
@@ -80,7 +83,11 @@ class RegexParser(AbstractParser):
         self.draw_methods[command['cmd']](*command['operand'])
 
 if __name__ == '__main__':
+
     from tigr.drawer.drawer import Drawer
-    from tigr.drawer.turtle_worker import TurtleWorker as Worker
+    if 1:
+        from tigr.drawer.turtle_worker import TurtleWorker as Worker
+    else:
+        from tigr.drawer.tkinter_worker import TkinterWorker as Worker
     parser = RegexParser(Drawer(Worker()))
     parser.parse(open('../test/instructions1.txt'))

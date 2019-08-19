@@ -9,7 +9,7 @@ class TkinterWorker(tk.Tk):
         self.geometry("800x600")
         self._pencolor = str(pencolor)
         self._pensize = int(pensize)
-        self.wait = self.speed(int(speed))
+        self.speed(int(speed))
 
         self.canvas = tk.Canvas(self, width=800, height=600)
         self.canvas.pack(side=tk.TOP, fill=tk.X)
@@ -21,7 +21,6 @@ class TkinterWorker(tk.Tk):
         self._pendown = True
         self._heading = 90
         self.__name__ = 'tkinter'
-        self.wait = 0.5 # seconds
 
     def setheading(self, direction):
         self._heading = direction
