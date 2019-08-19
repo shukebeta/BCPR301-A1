@@ -28,14 +28,13 @@ class RegexParser(AbstractParser):
 
     def parse(self, file):
         import re
-        pattern = r'^([DdUuPpNnEeSsWwXxYyGg])\s*(-?[\s\d]+)?'
+        pattern = r'^([DdUuPpNnEeSsWwXxYyGg])\s*(-?[\s\d]+)?(?:#.*)?$'
         p = re.compile(pattern)
 
         class _Parse():
             def __init__(self, line):
                 line = line.strip()
                 match = p.match(line)
-                # print(line, match)
                 self.error_message = ''
                 self.command = {
                     'line': line,
@@ -48,7 +47,7 @@ class RegexParser(AbstractParser):
                     if data is not None and (cmd == 'U' or cmd == 'D'):
                         self.error_message = f'invalid command: "{line}". {cmd} need not any number but got number(s)'
                     if data is None:
-                        if (cmd != 'U' and cmd != 'D'):
+                        if cmd != 'U' and cmd != 'D':
                             self.error_message = f'invalid command: "{line}". {cmd} need number(s) but get none'
                     else:
                         print(re.split(r'\s+', data.strip()))
@@ -64,7 +63,10 @@ class RegexParser(AbstractParser):
                                 self.error_message = f'invalid command: "{line}". {cmd} need 1 number but get {count} number(s)'
                                 self.command = None
                 else:
-                    self.error_message = f'invalid command: "{line}". unrecognized command.'
+                    if line[0] == '#':
+                        self.error_message = f'skip comment line: {line}'
+                    else:
+                        self.error_message = f'invalid command: "{line}". unrecognized command.'
 
         for line in file:
             cmd = _Parse(line)

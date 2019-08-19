@@ -21,10 +21,11 @@ def main(arguments):
     drawer = Drawer(worker)
     if len(arguments['FILES']) > 0:
         from tigr.parser.regex_parser import RegexParser as Parser
+        from tigr.reader.reader import SourceReader
         parser = Parser(drawer)
-        for afile in arguments['FILES']:
-            with open(afile) as file:
-                parser.parse(file)
+        for filename in arguments['FILES']:
+            reader = SourceReader(parser, filename)
+            reader.go()
 
         import time
         time.sleep(0.5)
