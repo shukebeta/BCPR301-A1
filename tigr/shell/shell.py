@@ -75,3 +75,8 @@ def parse(arg):
 
 def parse_int(arg):
     return tuple(map(int, arg.split()))
+
+if __name__ == '__main__':
+    from tigr.drawer.drawer import Drawer
+    from tigr.drawer.tkinter_worker import TkinterWorker
+    Shell(Drawer(TkinterWorker())).cmdloop()        

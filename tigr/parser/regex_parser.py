@@ -1,6 +1,3 @@
-import sys
-sys.path.extend(['../..', '..'])
-
 from tigr.tigr_interface import AbstractParser
 
 

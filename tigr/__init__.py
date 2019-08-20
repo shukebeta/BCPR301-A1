@@ -4,7 +4,7 @@ def main(arguments):
     # support stdin
     # default turtle_worker
     # before execute input instructs, draw a star as welcome figure
-    import tigr.shell.cmd as cmd
+    import tigr.shell.shell as cmd
 
     from tigr.drawer.drawer import Drawer
 
@@ -29,8 +29,8 @@ def main(arguments):
 
         import time
         time.sleep(0.5)
-        if arguments['--interactive'] == '1':
-            import tigr.shell.cmd as cmd
-            cmd.Shell(drawer).cmdloop()
+        if arguments['--interactive']:
+            from tigr.shell.shell import Shell
+            Shell(drawer).cmdloop()
     else:
         cmd.Shell(drawer).cmdloop()
