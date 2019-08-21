@@ -66,16 +66,17 @@ class RegexParser(AbstractParser):
                         self.error_message = f'invalid command: "{line}". unrecognized command.'
 
         for line in file:
-            cmd = _Parse(line)
-            if cmd.error_message == '':
-                self.do(cmd.command)
-            else:
-                print(cmd.error_message)
+            line = line.strip()
+            if line:
+                cmd = _Parse(line)
+                if cmd.error_message == '':
+                    self.do(cmd.command)
+                else:
+                    print(cmd.error_message)
 
     def do(self, command):
         if command['cmd'] in self.draw_degrees:
             command['operand'].insert(0, self.draw_degrees[command['cmd']])
-        print(command['operand'])
         self.draw_methods[command['cmd']](*command['operand'])
 
 if __name__ == '__main__':
@@ -85,5 +86,15 @@ if __name__ == '__main__':
         from tigr.drawer.turtle_worker import TurtleWorker as Worker
     else:
         from tigr.drawer.tkinter_worker import TkinterWorker as Worker
-    parser = RegexParser(Drawer(Worker()))
+
+    drawer = Drawer(Worker())
+    parser = RegexParser(drawer)
     parser.parse(open('../test/instructions1.txt'))
+
+    import time
+
+    time.sleep(0.5)
+
+    from tigr.shell.shell import Shell
+
+    Shell(drawer).cmdloop()

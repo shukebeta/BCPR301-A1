@@ -1,8 +1,10 @@
+from tigr.tigr_interface import AbstractDrawer
+
 import logging, sys
 logging.basicConfig(stream=sys.stderr, level=logging.CRITICAL)
 debug = logging.debug
 
-from tigr.tigr_interface import AbstractDrawer
+
 class Drawer(AbstractDrawer):
     pen_list =[
         {

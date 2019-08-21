@@ -4,6 +4,7 @@ import time
 
 
 class TkinterWorker(tk.Tk):
+    name = 'tkinter'
     def __init__(self, speed=6, pencolor='black', pensize=2):
         super().__init__()
         self.title("Tkinter drawer")
@@ -21,7 +22,6 @@ class TkinterWorker(tk.Tk):
         }
         self._pendown = True
         self._heading = 90
-        self.__name__ = 'tkinter'
 
     def setheading(self, direction):
         self._heading = direction

@@ -1,12 +1,12 @@
-U
-D
-G 100
-P 2
-P 1 2
-N 100
-w 100
-S 100
-E 100
+U        # penup
+D        # pendown
+G 100    # invalid goto
+P 2      # select_pen 2
+P 1 2    # invalid select_pen instruction
+N 100    # go_down -100
+w 100    # go_along -100
+S 100    # go_down 100
+E 100    # go_along 100
 w 100 3
 #N 100 2
 #S 100 4

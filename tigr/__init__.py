@@ -20,8 +20,12 @@ def main(arguments):
     )
     drawer = Drawer(worker)
     if len(arguments['FILES']) > 0:
-        from tigr.parser.regex_parser import RegexParser as Parser
+        if arguments['--parser'] == 'regex':
+            from tigr.parser.regex_parser import RegexParser as Parser
+        else:
+            from tigr.parser.peg_parser import PEGParser as Parser
         from tigr.reader.reader import SourceReader
+
         parser = Parser(drawer)
         for filename in arguments['FILES']:
             reader = SourceReader(parser, filename)

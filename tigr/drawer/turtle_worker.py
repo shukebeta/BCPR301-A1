@@ -2,6 +2,7 @@ from turtle import Turtle
 import time
 
 class TurtleWorker(Turtle):
+    name = 'turtle'
     def __init__(self, speed=6, pencolor='black', pensize=2):
         super().__init__()
         self.__name__ = 'turtle'
