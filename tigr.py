@@ -1,17 +1,19 @@
 """Tigr.
 
 Usage:
-  tigr.py [FILES ...] [-e tkinter] [-s 5] [--pencolor black] [--pensize 1] [-c c.ini] [-i] [-p regex]
+  tigr.py [FILES ...] [-c c.ini] [-e tkinter] [-s 5] [-p regex] [--pencolor black] [--pensize 1] [-i]
+
+You can also run all the unittest by this command: python -m unittest discover tigr/test
 
 Options:
   -h --help                  Show this screen.
-  -e turtle --engine turtle  Specify the drawer engine, tkinter or turtle. [default: turtle]
   -c 1.ini --config 1.ini    Specify the ini config file name
+  -e turtle --engine turtle  Specify the drawer engine, tkinter or turtle. [default: turtle]
   -s 5 --speed 5             Specify the drawer speed, 1 slowest, 9 fastest [default: 5]
   -p regex --parser regex    Specify the instruction parser [default: peg]
-  -i --interactive           Specify if enter interactive mode when the script files were executed done [default: 0]
   --pencolor black           Specify pen color [default: black]
   --pensize 1                Specify pen size [default: 1]
+  -i --interactive           Specify if enter interactive mode when the script files were executed done [default: 0]
   --version                  Show version
 
 Attention:

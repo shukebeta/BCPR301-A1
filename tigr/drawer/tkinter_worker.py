@@ -97,7 +97,14 @@ class TkinterWorker(tk.Tk):
         direction += 90
         self._heading = direction
         x, y = self._calc_target_pos(direction, distance)
-        self._draw_line(x, y)
+
+        if not self._pendown:
+            self.pendown()
+            self._draw_line(x, y)
+            self.penup()
+        else:
+            self._draw_line(x, y)
+
 
     def _draw_line(self, x, y):
         self.canvas.create_line(self.pos['x'], self.pos['y'], x, y, fill=self._pencolor, width=self._pensize)
