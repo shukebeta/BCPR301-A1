@@ -1,7 +1,11 @@
 from tigr.tigr_interface import AbstractParser
+import re
 
 
 class RegexParser(AbstractParser):
+    pattern = r'^([DUPNESWXYGL])\s*(-?[\s\d]+)?(?:#.*)?$'
+    p = re.compile(pattern, re.IGNORECASE)
+
     def __init__(self, drawer):
         super().__init__(drawer)
         self.draw_methods = {
@@ -15,6 +19,7 @@ class RegexParser(AbstractParser):
             'P': self.drawer.select_pen,
             'X': self.drawer.go_along,
             'Y': self.drawer.go_down,
+            'L': self.drawer.draw_line,
         }
         self.draw_degrees = {
             'N': 90,
@@ -23,56 +28,55 @@ class RegexParser(AbstractParser):
             'W': 180,
         }
 
-    def parse(self, file):
-        import re
-        pattern = r'^([DdUuPpNnEeSsWwXxYyGg])\s*(-?[\s\d]+)?(?:#.*)?$'
-        p = re.compile(pattern)
-
-        class _Parse():
-            def __init__(self, line):
-                line = line.strip()
-                match = p.match(line)
-                self.error_message = ''
-                self.command = {
-                    'line': line,
-                    'operand': []
-                }
-                if match:
-                    cmd, data = match.groups()
-                    cmd = cmd.upper()
-                    self.command['cmd'] = cmd
-                    if data is not None and (cmd == 'U' or cmd == 'D'):
-                        self.error_message = f'invalid command: "{line}". {cmd} need not any number but got number(s)'
-                    if data is None:
-                        if cmd != 'U' and cmd != 'D':
-                            self.error_message = f'invalid command: "{line}". {cmd} need number(s) but get none'
-                    else:
-                        print(re.split(r'\s+', data.strip()))
-                        operand = [int(i) for i in re.split(r'\s+', data.strip())]
-                        count = len(operand)
-                        self.command['operand'] = operand
-                        if cmd == 'G':
-                            if count != 2:
-                                self.error_message = f'invalid command: "{line}". {cmd} need 2 numbers but get {count} number(s)'
-                                self.command = None
-                        else:
-                            if count != 1:
-                                self.error_message = f'invalid command: "{line}". {cmd} need 1 number but get {count} number(s)'
-                                self.command = None
+    def parseline(self, line):
+        line = line.strip()
+        match = self.p.match(line)
+        error_message = ''
+        command = {
+            'line': line,
+            'operand': []
+        }
+        if match:
+            cmd, data = match.groups()
+            cmd = cmd.upper()
+            command['cmd'] = cmd
+            if data is not None and (cmd == 'U' or cmd == 'D'):
+                error_message = f'invalid command: "{line}". {cmd} need not any number but got number(s)'
+            if data is None:
+                if cmd != 'U' and cmd != 'D':
+                    error_message = f'invalid command: "{line}". {cmd} need number(s) but get none'
+            else:
+                print(re.split(r'\s+', data.strip()))
+                operand = [int(i) for i in re.split(r'\s+', data.strip())]
+                count = len(operand)
+                command['operand'] = operand
+                if cmd == 'G' or cmd == 'L':
+                    if count != 2:
+                        error_message = f'invalid command: "{line}". {cmd} need 2 numbers but get {count} number(s)'
+                        command = None
                 else:
-                    if line[0] == '#':
-                        self.error_message = f'skip comment line: {line}'
-                    else:
-                        self.error_message = f'invalid command: "{line}". unrecognized command.'
+                    if count != 1:
+                        error_message = f'invalid command: "{line}". {cmd} need 1 number but get {count} number(s)'
+                        command = None
+        else:
+            if line[0] == '#':
+                error_message = f'skip comment line: {line}'
+            else:
+                error_message = f'invalid command: "{line}". unrecognized command.'
+        return {
+            'error_message': error_message,
+            'command': command,
+        }
 
+    def parse(self, file):
         for line in file:
             line = line.strip()
             if line:
-                cmd = _Parse(line)
-                if cmd.error_message == '':
-                    self.do(cmd.command)
+                cmd = self.parseline(line)
+                if cmd['error_message']:
+                    print(cmd['error_message'])
                 else:
-                    print(cmd.error_message)
+                    self.do(cmd['command'])
 
     def do(self, command):
         if command['cmd'] in self.draw_degrees:
@@ -89,7 +93,7 @@ if __name__ == '__main__':
 
     drawer = Drawer(Worker())
     parser = RegexParser(drawer)
-    parser.parse(open('../test/instructions1.txt'))
+    parser.parse(open('../test/instructions2.txt'))
 
     import time
 

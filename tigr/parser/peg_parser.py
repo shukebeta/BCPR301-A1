@@ -11,7 +11,7 @@ class PEGParser(RegexParser):
         r"""
         expr    = zero / one / two / comment
         zero    = ws* ~'([DU])'i comment?
-        two     = ws* ~'([G])'i ws* (operand) ws+ (operand) comment?
+        two     = ws* ~'(G|L)'i ws* (operand) ws+ (operand) comment?
         one     = ws* ~'([PNSEWXY])'i ws* (operand) comment?
         operand = ~r'-?[0-9]+'
         ws      = ~"\s"
@@ -51,7 +51,7 @@ if __name__ == '__main__':
 
     drawer = Drawer(Worker())
     parser = PEGParser(drawer)
-    parser.parse(open('../test/instructions1.txt'))
+    parser.parse(open('../test/instructions2.txt'))
 
     import time
 

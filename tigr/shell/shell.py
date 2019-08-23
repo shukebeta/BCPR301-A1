@@ -12,9 +12,11 @@ class Shell(cmd.Cmd):
             'quit': self.do_bye,
             'd': self.do_pendown,
             'u': self.do_penup,
-            'dl': self.do_draw_line,
+            'l': self.do_draw_line,
             'g': self.do_goto,
             'p': self.do_select_pen,
+            'x': self.do_go_along,
+            'y': self.do_go_down,
         }
 
         self.heading_dict = {
@@ -25,16 +27,37 @@ class Shell(cmd.Cmd):
         }
 
     def default(self, line):
-        cmd, arg, line = self.parseline(line)
-        cmd = cmd.lower()
-        if cmd in self.alias_list:
-            return self.alias_list[cmd](arg)
-        elif cmd in ['n', 's', 'e', 'w']:
-            arg = f'{self.heading_dict[cmd]} {arg}'
-            self.do_draw_line(arg)
-        else:
-            getattr(self, f'do_{cmd}')(arg)
-            # super().default(line)
+        try:
+            # process P9 / X-100 similar commands
+            line = line.strip()
+            if len(line) >= 2 and (line[1] == '-' or line[1] in [str(i) for i in range(0,10)]):
+                line = line[0] + ' ' + line[1:]
+
+            # process comments
+            index = line.find('#')
+            if index != -1:
+                line = line[:index]
+
+            cmd, arg, line = self.parseline(line)
+            cmd = cmd.lower()
+            if cmd in self.alias_list:
+                return self.alias_list[cmd](arg)
+            elif cmd in ['n', 's', 'e', 'w']:
+                arg = f'{self.heading_dict[cmd]} {arg}'
+                self.do_draw_line(arg)
+            else:
+                # process EOF
+                if line == 'EOF':
+                    import time
+                    time.sleep(0.5)
+                    raise SystemExit
+                # getattr(self, f'do_{cmd}')(arg)
+                super().default(line)
+        except Exception as e:
+            print(f'Invalid command {line}')
+
+    def emptyline(self):
+        pass
 
     # ----- basic turtle commands -----
 
