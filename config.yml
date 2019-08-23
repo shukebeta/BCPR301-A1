@@ -1,0 +1,7 @@
+drawer:
+        engine: tkinter
+        pensize: 3
+        pencolor: green
+        speed: 8
+instructions:
+        parser: regex
