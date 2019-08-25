@@ -18,7 +18,7 @@ False
 9
 >>> tw.setheading(180)
 >>> tw._heading
-180
+270
 >>> tw.goto(100,100)
 >>> tw.pos()
 Traceback (most recent call last):

@@ -8,12 +8,14 @@ class SourceReader(AbstractSourceReader):
 
     def __init__(self, parser, optional_file_name=None):
         super().__init__(parser, optional_file_name)
-        import os.path
-        if os.path.lexists(optional_file_name):
+        try:
             with open(optional_file_name) as file:
                 for line in file:
                     line = line.strip()
                     if line != '':
                         self.source.append(line)
+        except Exception as e:
+            print(e)
+
     def go(self):
         self.parser.parse(self.source)
