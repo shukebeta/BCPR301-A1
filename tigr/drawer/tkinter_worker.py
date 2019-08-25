@@ -1,3 +1,42 @@
+"""
+>>> from tigr.drawer import tkinter_worker
+>>> tw = tkinter_worker.TkinterWorker(speed=6, pencolor='black', pensize=2)
+>>> tw.init_config
+{'speed': 6, 'pencolor': 'black', 'pensize': 2}
+>>> tw._pencolor
+'black'
+>>> tw._pensize
+2
+>>> tw.pendown()
+>>> tw._pendown
+True
+>>> tw.penup()
+>>> tw._pendown
+False
+>>> tw.pensize(9)
+>>> tw._pensize
+9
+>>> tw.setheading(180)
+>>> tw._heading
+180
+>>> tw.goto(100,100)
+>>> tw.pos()
+Traceback (most recent call last):
+  File "<input>", line 1, in <module>
+TypeError: 'dict' object is not callable
+>>> tw.pos
+{'x': 100, 'y': 100}
+>>> tw.goto(200,100)
+>>> tw.pos
+{'x': 200, 'y': 100}
+>>> tw.speed(6)
+>>> tw.wait
+0.16666666666666666
+>>> tw.speed(8)
+>>> tw.wait
+0.125
+"""
+
 import tkinter as tk
 import math
 import time
@@ -27,7 +66,7 @@ class TkinterWorker(tk.Tk):
             'y': 300
         }
         self._pendown = True
-        self._heading = 90
+        self.setheading(0)
         self.draw_history = []
 
     def reset(self):
@@ -41,7 +80,7 @@ class TkinterWorker(tk.Tk):
         self.update()
 
     def setheading(self, direction):
-        self._heading = direction
+        self._heading = direction + 90
 
     def penup(self):
         self._pendown = False
@@ -56,10 +95,9 @@ class TkinterWorker(tk.Tk):
 
     def go_down(self, length):
         if length > 0:
-            heading = 0
+            self._heading = 0
         else:
-            heading = 180
-        self.setheading(heading)
+            self._heading = 180
         self.forward(abs(length))
         self.debug()
 
@@ -82,10 +120,9 @@ class TkinterWorker(tk.Tk):
 
     def go_along(self, along):
         if along > 0:
-            heading = 90
+            self._heading = 90
         else:
-            heading = 270
-        self.setheading(heading)
+            self._heading = 270
         self.forward(abs(along))
 
     def bye(self):
@@ -109,9 +146,8 @@ class TkinterWorker(tk.Tk):
 
     def draw_line(self, direction, distance):
         # to get same behaviour as turtle
-        direction += 90
-        self._heading = direction
-        x, y = self._calc_target_pos(direction, distance)
+        self._heading = direction + 90
+        x, y = self._calc_target_pos(self._heading, distance)
 
         if not self._pendown:
             self.pendown()
@@ -135,6 +171,4 @@ class TkinterWorker(tk.Tk):
     def heading(self):
         return self._heading - 90
 
-if __name__ == '__main__':
-    root = TkinterWorker()
-    root.mainloop()
+

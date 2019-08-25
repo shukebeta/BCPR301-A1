@@ -4,6 +4,7 @@ Usage:
   tigr.py [FILES ...] [-c c.ini] [-e tkinter] [-s 5] [-p regex] [--pencolor black] [--pensize 1] [-i]
 
 You can also run all the unittest by this command: python -m unittest discover tigr/test
+You can also run all the doc-test by this command: python -m doctest -v tigr/drawer/tkinter_worker.py
 
 Options:
   -h --help                  Show this screen.
