@@ -94,6 +94,9 @@ class Drawer(AbstractDrawer):
         self.worker.draw_line(int(direction), int(distance))
         debug(f'draw a line with length: {distance}, direction: {direction} degree.' )
 
+    def reset(self):
+        self.worker.reset()
+
     def bye(self):
         self.worker.bye()
 

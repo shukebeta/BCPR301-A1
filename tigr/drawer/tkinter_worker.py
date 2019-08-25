@@ -7,6 +7,11 @@ class TkinterWorker(tk.Tk):
     name = 'tkinter'
     def __init__(self, speed=6, pencolor='black', pensize=2):
         super().__init__()
+        self.init_config = {
+            'speed': speed,
+            'pencolor': pencolor,
+            'pensize': pensize
+        }
         self.title("Tkinter drawer")
         self.geometry("800x600")
         self._pencolor = str(pencolor)
@@ -15,6 +20,7 @@ class TkinterWorker(tk.Tk):
 
         self.canvas = tk.Canvas(self, width=800, height=600)
         self.canvas.pack(side=tk.TOP, fill=tk.X)
+
         self.home_pos = (400, 300)
         self.pos = {
             'x': 400,
@@ -22,6 +28,17 @@ class TkinterWorker(tk.Tk):
         }
         self._pendown = True
         self._heading = 90
+        self.draw_history = []
+
+    def reset(self):
+        for id in self.draw_history:
+            self.canvas.after(0, self.canvas.delete, id)
+        self.draw_history = []
+        self._pencolor = self.init_config['pencolor']
+        self._pensize = int(self.init_config['pensize'])
+        self.speed(int(self.init_config['speed']))
+        self.goto(*self.home_pos)
+        self.update()
 
     def setheading(self, direction):
         self._heading = direction
@@ -72,8 +89,6 @@ class TkinterWorker(tk.Tk):
         self.forward(abs(along))
 
     def bye(self):
-        self.quit()
-        self.update()
         time.sleep(0.5)
 
     def speed(self, speed):
@@ -107,7 +122,8 @@ class TkinterWorker(tk.Tk):
 
 
     def _draw_line(self, x, y):
-        self.canvas.create_line(self.pos['x'], self.pos['y'], x, y, fill=self._pencolor, width=self._pensize)
+        id = self.canvas.create_line(self.pos['x'], self.pos['y'], x, y, fill=self._pencolor, width=self._pensize)
+        self.draw_history.append(id)
         self.goto(x, y)
         self.update()
         self.debug()

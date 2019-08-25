@@ -1,4 +1,5 @@
-import cmd, sys
+import cmd
+import os
 
 class Shell(cmd.Cmd):
     intro = 'Welcome to the tigr shell.   Type help or ? to list commands.\n'
@@ -26,7 +27,15 @@ class Shell(cmd.Cmd):
             'w': 180,
         }
 
+        self.path_file = ''
+        self.recording = False
+
     def precmd(self, line):
+        line = line.lower()
+        if self.recording and 'playback' not in line:
+            with open(self.path_file, 'a') as f:
+                print(line, file=f)
+
         # process P9 / X-100 similar commands
         line = line.strip()
         if len(line) >= 2 and (line[1] == '-' or line[1] in [str(i) for i in range(0, 10)]):
@@ -41,7 +50,6 @@ class Shell(cmd.Cmd):
     def default(self, line):
         try:
             cmd, arg, line = self.parseline(line)
-            cmd = cmd.lower()
             if cmd in self.alias_list:
                 return self.alias_list[cmd](arg)
             elif cmd in ['n', 's', 'e', 'w']:
@@ -61,52 +69,56 @@ class Shell(cmd.Cmd):
     def emptyline(self):
         pass
 
-    # ----- basic turtle commands -----
+    # ----- basic commands -----
 
     def do_select_pen(self, arg):
-        "Select a pen: 1 ~ 9"
+        """Select a pen: 1 ~ 9"""
         self.drawer.select_pen(*parse_int(arg))
 
-    def do_penup(self, Pearg):
-        "Set pen up, other draw instructions except draw_line will just move but don't draw."
+    def do_penup(self, arg):
+        """Set pen up, other draw instructions except draw_line will just move but don't draw."""
         self.drawer.pen_up()
 
     def do_pendown(self, arg):
-        "Set pen down, draw instructions except goto will move and draw."
+        """Set pen down, draw instructions except goto will move and draw."""
         self.drawer.pen_down()
 
     def do_pencolor(self, arg):
-        "Set pen color: green, orange or any other colors"
+        """Set pen color: green, orange or any other colors"""
         self.drawer.pencolor(*parse(arg))
 
     def do_pensize(self, arg):
-        "Set pen size: 1 ~ 9"
+        """Set pen size: 1 ~ 9"""
         self.drawer.pensize(*parse_int(arg))
 
     def do_go_along(self, arg):
-        "Draw a horizontal line of a specified length"
+        """Draw a horizontal line of a specified length"""
         self.drawer.go_along(*parse_int(arg))
 
     def do_goto(self, arg):
-        "Goto a position without drawing any line"
+        """Goto a position without drawing any line"""
         self.drawer.goto(*parse_int(arg))
 
     def do_go_down(self, arg):
-        "Draw a vertical line of a specified length"
+        """Draw a vertical line of a specified length"""
         self.drawer.go_down(*parse_int(arg))
 
     def do_forward(self, arg):
-        "Move specified distance along the original heading"
+        """Move specified distance along the original heading"""
         self.drawer.forward(*parse_int(arg))
 
     def do_draw_line(self, arg):
         "Draw a line with specified degree and distance"
         self.drawer.draw_line(*parse_int(arg))
 
+    def do_reset(self, arg):
+        self.drawer.reset()
+
     def do_bye(self, arg):
         'Close the drawing window and exit:  BYE'
-        print(f'Thank you for using {self.drawer.worker.name}')
+        self.close()
         self.drawer.bye()
+        print(f'Thank you for using {self.drawer.worker.name}')
         return True
 
     # def __getattr__(self, item):
@@ -116,7 +128,46 @@ class Shell(cmd.Cmd):
     #     if item in alias:
     #         return alias[item]
 
+   # ----- record and playback -----
+    def do_record(self, arg):
+        """Save future commands to filename:  RECORD rose.cmd"""
+        path_file = arg.strip()
+        if path_file == '':
+            print('You need a filename after your command.')
+            return None
+        else:
+            self.path_file = f'..{os.sep}test{os.sep}{arg}'
+        # truncate path_file to zero length
+        open(self.path_file, 'w').close()
+        self.recording = True
 
+    def do_playback(self, arg):
+        """Playback commands from a file:  PLAYBACK rose.cmd"""
+        self.recording = False
+        self.drawer.reset()
+
+        path_file = arg.strip()
+        if path_file == '':
+            if self.path_file != '':
+                path_file = self.path_file
+            else:
+                print('You need a filename after your command.')
+                return None
+        else:
+            path_file = f'..{os.sep}test{os.sep}{arg}'
+
+        try:
+            with open(path_file) as f:
+                instructions = f.read()
+                self.cmdqueue.extend(instructions.splitlines())
+                f.close()
+        except Exception as e:
+            print(e)
+
+    def close(self):
+        if self.file:
+            self.file.close()
+            self.file = None
 
 def parse(arg):
     'Convert a series of zero or more numbers to an argument tuple'
