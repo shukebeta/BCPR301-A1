@@ -1,6 +1,7 @@
 import cmd
 import os
 
+
 class Shell(cmd.Cmd):
     intro = 'Welcome to the tigr shell.   Type help or ? to list commands.\n'
     file = None
@@ -136,7 +137,9 @@ class Shell(cmd.Cmd):
             print('You need a filename after your command.')
             return None
         else:
-            self.path_file = f'..{os.sep}test{os.sep}{arg}'
+            pwd = os.path.dirname(os.path.abspath(__file__))
+            self.path_file = f'{pwd}{os.sep}..{os.sep}test{os.sep}{arg}'
+
         # truncate path_file to zero length
         open(self.path_file, 'w').close()
         self.recording = True
@@ -154,7 +157,8 @@ class Shell(cmd.Cmd):
                 print('You need a filename after your command.')
                 return None
         else:
-            path_file = f'..{os.sep}test{os.sep}{arg}'
+            pwd = os.path.dirname(os.path.abspath(__file__))
+            path_file = f'{pwd}{os.sep}..{os.sep}test{os.sep}{arg}'
 
         try:
             with open(path_file) as f:
