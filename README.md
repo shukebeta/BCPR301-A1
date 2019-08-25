@@ -3,7 +3,7 @@ BCPR301 Advanced Programming Assignment 1:  Extend the provided the Tiny Interpr
 
 In this project, we plan to implement below features:
 
-1. Cmd interface for TIGr (mostly a shell interface)
+1. Cmd interface for TIGr: a shell similar interpreter
 2. Support piping and scripting
 3. Command line switches
 4. Parsed from configurable lookup table
@@ -11,8 +11,12 @@ In this project, we plan to implement below features:
 6. Generic Parser
 7. Tkinter output
 8. Turtle output
-9. Several doctest case (great than 5)
-10. Several unitest case (great than 5)
+9. Several doctest case: 20 test case for tkinter-worker
+10. Several unitest case: 10 test case for tkinter-worker
+11. Recording drawing instructions
+12. Playback for recorded drawing instructions
+13. Reset canvas
+14. Exceptions process for robustness  
 
 It is a shell application which supports multiple drawer engine, include Turtle, TkInter.
 
@@ -38,8 +42,9 @@ It is a shell application which supports multiple drawer engine, include Turtle,
 
 - This application includes test
     - doctest
+        - `python -m doctest -v tigr/drawer/tkinter_worker.py`
     - unittest
-    
+        - `python -m unittest discover tigr/test`
 - Usage:
     - python tigr.py # interactive mode, with default parameters
     - python tigr.py < instructions.txt
