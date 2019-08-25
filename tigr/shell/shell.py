@@ -26,18 +26,20 @@ class Shell(cmd.Cmd):
             'w': 180,
         }
 
+    def precmd(self, line):
+        # process P9 / X-100 similar commands
+        line = line.strip()
+        if len(line) >= 2 and (line[1] == '-' or line[1] in [str(i) for i in range(0, 10)]):
+            line = line[0] + ' ' + line[1:]
+
+        # process comments
+        index = line.find('#')
+        if index != -1:
+            line = line[:index]
+        return line
+
     def default(self, line):
         try:
-            # process P9 / X-100 similar commands
-            line = line.strip()
-            if len(line) >= 2 and (line[1] == '-' or line[1] in [str(i) for i in range(0,10)]):
-                line = line[0] + ' ' + line[1:]
-
-            # process comments
-            index = line.find('#')
-            if index != -1:
-                line = line[:index]
-
             cmd, arg, line = self.parseline(line)
             cmd = cmd.lower()
             if cmd in self.alias_list:
