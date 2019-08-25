@@ -22,9 +22,11 @@ class PEGParser(RegexParser):
     visitor = Visitor()
 
     def parse(self, file):
+        self.drawer.reset()
         for line in file:
             line = line.strip()
-            if line == '': continue
+            if line == '':
+                continue
             try:
                 cmd_tree = self.grammer.parse(line)
                 cmd = self.visitor.visit(cmd_tree)

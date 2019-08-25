@@ -13,7 +13,7 @@ class Visitor(NodeVisitor):
 
     def visit_zero(self, node, children):
         _, directive, *_ = children
-        return directive.text.upper(),
+        return directive.text,
 
     def visit_one(self, node, children):
         _, directive, _, p1, *_ = children

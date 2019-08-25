@@ -47,14 +47,14 @@ class Drawer(AbstractDrawer):
 
     def __init__(self, worker):
         self.worker = worker
-        super(Drawer, self).__init__()
+        super().__init__()
 
     def select_pen(self, pen):
         """pen should be a integer from 1 to 9, every pen has a pencolor and pensize attribute
         """
         pen = int(pen)
         if pen < 1 or pen > 9:
-            debug(f'invalid pen: {pen}, should be a integer between 0 and 9')
+            debug(f'invalid pen: {pen}, should be a integer between 1 and 9')
             return False
         self.pensize(self.pen_list[pen - 1]['pensize'])
         self.pencolor(self.pen_list[pen - 1]['pencolor'])

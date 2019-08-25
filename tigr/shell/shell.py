@@ -58,7 +58,7 @@ class Shell(cmd.Cmd):
                 self.do_draw_line(arg)
             else:
                 # process EOF
-                if line == 'EOF':
+                if line.upper() == 'EOF':
                     import time
                     time.sleep(0.5)
                     raise SystemExit
@@ -98,7 +98,10 @@ class Shell(cmd.Cmd):
 
     def do_goto(self, arg):
         """Goto a position without drawing any line"""
-        self.drawer.goto(*parse_int(arg))
+        try:
+            self.drawer.goto(*parse_int(arg))
+        except Exception as e:
+            print(e)
 
     def do_go_down(self, arg):
         """Draw a vertical line of a specified length"""

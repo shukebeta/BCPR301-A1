@@ -1,6 +1,7 @@
 from turtle import Turtle
 import time
 
+
 class TurtleWorker(Turtle):
     name = 'turtle'
     def __init__(self, speed=6, pencolor='black', pensize=2):

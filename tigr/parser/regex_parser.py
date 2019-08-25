@@ -69,6 +69,7 @@ class RegexParser(AbstractParser):
         }
 
     def parse(self, file):
+        self.drawer.reset()
         for line in file:
             line = line.strip()
             if line:
