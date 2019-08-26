@@ -22,7 +22,7 @@ class TestTkinterWorker(unittest.TestCase):
     def test_draw_line(self):
         self.o.penup()
         self.o.draw_line(45, 100)
-        self.assertTrue(not self.o._pendown)
+        self.assertFalse(self.o._pendown)
         self.o.pendown()
         self.o.draw_line(90, 100)
         self.assertTrue(self.o._pendown)
@@ -54,7 +54,7 @@ class TestTkinterWorker(unittest.TestCase):
 
     def test_setheading(self):
         self.o.setheading(100)
-        self.assertTrue(self.o._heading == 190)
+        self.assertTrue(self.o.heading == 100)
 
     def test_godown(self):
         self.o.goto(*self.o.home_pos)
