@@ -48,6 +48,21 @@ class Shell(cmd.Cmd):
             line = line[:index]
         return line
 
+    def parseline(self, line):
+        cmd, arg, line = super().parseline(line)
+        if cmd:
+            cmd = cmd.lower()
+            if self._is_invalid_command(cmd, arg):
+                return f'Invalid command: {line}', '', line
+        return cmd, arg, line
+
+    def _is_invalid_command(self, cmd,  arg):
+        return cmd in ['u', 'd', 'penup', 'pendown', 'pensize', 'reset', 'quit', 'bye'] and arg != '' or \
+               cmd in ['l', 'g', 'goto', 'draw_lne'] and len(arg.split()) != 2 or \
+               cmd in ['n', 's', 'w', 'e', 'x', 'y', 'select_pen', 'go_along', 'go_down', 'forward',
+                       'record', 'playback'] and len(arg.split()) != 1
+
+
     def default(self, line):
         try:
             cmd, arg, line = self.parseline(line)
