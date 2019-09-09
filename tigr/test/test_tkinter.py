@@ -2,7 +2,7 @@ import unittest
 from tigr.drawer.tkinter_worker import TkinterWorker
 
 
-class TestTkinterWorker(unittest.TestCase):
+class TestCaseTkinterWorker(unittest.TestCase):
 
     def setUp(self):
         self.o = TkinterWorker(speed=8, pencolor='red', pensize=3)

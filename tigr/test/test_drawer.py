@@ -3,7 +3,7 @@ from tigr.drawer.drawer import Drawer
 from tigr.drawer.turtle_worker import TurtleWorker
 
 
-class TestDrawer(unittest.TestCase):
+class TestCaseDrawer(unittest.TestCase):
 
 	def setUp(self):
 		self.o = Drawer(worker=TurtleWorker())

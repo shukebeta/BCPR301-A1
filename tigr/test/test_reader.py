@@ -5,7 +5,7 @@ from tigr.drawer.drawer import Drawer
 from tigr.drawer.turtle_worker import TurtleWorker
 
 
-class TestSourceReader(unittest.TestCase):
+class TestCaseSourceReader(unittest.TestCase):
 	def setUp(self):
 		drawer = Drawer(TurtleWorker())
 		parser = RegexParser
