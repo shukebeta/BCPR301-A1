@@ -7,11 +7,10 @@ from tigr.drawer.turtle_worker import TurtleWorker
 
 class TestSourceReader(unittest.TestCase):
 	def setUp(self):
-		drawer = Drawer
+		drawer = Drawer(TurtleWorker())
 		parser = RegexParser
-		self.o = SourceReader(parser(drawer(TurtleWorker)), optional_file_name=None)
+		self.o = SourceReader(parser(drawer), optional_file_name=None)
 
 	def test_go(self):
-		# self.assertTrue(self.o.parser.parse('instruction2.txt'))
-		pass
-# TypeError: reset() missing 1 required positional argument: 'self'
+		self.assertFalse(self.o.parser.parse('instruction2.txt'))
+

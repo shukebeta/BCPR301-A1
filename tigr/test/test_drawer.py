@@ -6,7 +6,7 @@ from tigr.drawer.turtle_worker import TurtleWorker
 class TestDrawer(unittest.TestCase):
 
 	def setUp(self):
-		self.o = Drawer(worker=TurtleWorker)
+		self.o =Drawer(worker=TurtleWorker)
 
 	def test_pensize(self):
 		pass
