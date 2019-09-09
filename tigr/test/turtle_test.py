@@ -20,10 +20,10 @@ class TestTurtleWorker(unittest.TestCase):
 	def test_draw_line(self):
 		self.o.penup()
 		self.o.draw_line(270, 100)
-		self.assertTrue(self.o.isdown() == True)
+		self.assertTrue(self.o.isdown())
 		self.o.penup()
 		self.o.draw_line(90, 100)
-		self.assertTrue(self.o.isdown() == True)
+		self.assertTrue(self.o.isdown())
 
 	def test_goto(self):
 		self.o.goto(400,200)
@@ -32,7 +32,8 @@ class TestTurtleWorker(unittest.TestCase):
 		self.assertTrue(self.o.pos() == (0, -100))
 
 	def test_speed(self):
-		pass
+		self.o.speed = 3
+		self.assertEqual(self.o.speed, 3)
 
 	def test_bye(self):
 		pass
