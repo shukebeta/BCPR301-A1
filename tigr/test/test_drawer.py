@@ -68,3 +68,9 @@ class TestDrawer(unittest.TestCase):
 		self.o.pen_up()
 		self.o.draw_line(90, 100)
 		self.assertTrue(self.o.worker.isdown())
+
+	def test_reset(self):
+		pass
+
+	def test_bye(self):
+		pass
