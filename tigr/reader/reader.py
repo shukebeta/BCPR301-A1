@@ -1,5 +1,6 @@
 from tigr.tigr_interface import AbstractSourceReader
 
+
 class SourceReader(AbstractSourceReader):
     """ responsible for providing source text for parsing and drawing
         Initiates the Draw use-case.
@@ -11,9 +12,7 @@ class SourceReader(AbstractSourceReader):
         try:
             with open(optional_file_name) as file:
                 for line in file:
-                    line = line.strip()
-                    if line != '':
-                        self.source.append(line)
+                    self.source.append(line)
         except Exception as e:
             print(e)
 

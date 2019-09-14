@@ -1,0 +1,17 @@
+[run]
+branch = True
+
+[report]
+omit =
+    */__init__.py
+    tigr/tigr_interface.py
+exclude_lines =
+# drawer / worker
+    def bye
+
+# regex parser
+
+# peg parser
+    class TigrVisitor
+# prompt source reader
+    self.cmdloop

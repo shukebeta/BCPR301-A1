@@ -58,3 +58,6 @@ class TurtleWorker(Turtle):
     def bye(self):
         time.sleep(0.5)
 
+    def pos(self):
+        return tuple([int(i) for i in super().pos()])
+

@@ -72,7 +72,7 @@ class RegexParser(AbstractParser):
         self.drawer.reset()
         for line in file:
             line = line.strip()
-            if line:
+            if line != '':
                 cmd = self.parseline(line)
                 if cmd['error_message']:
                     print(cmd['error_message'])
@@ -84,22 +84,23 @@ class RegexParser(AbstractParser):
             command['operand'].insert(0, self.draw_degrees[command['cmd']])
         self.draw_methods[command['cmd']](*command['operand'])
 
-if __name__ == '__main__':
 
-    from tigr.drawer.drawer import Drawer
-    if 1:
-        from tigr.drawer.turtle_worker import TurtleWorker as Worker
-    else:
-        from tigr.drawer.tkinter_worker import TkinterWorker as Worker
-
-    drawer = Drawer(Worker())
-    parser = RegexParser(drawer)
-    parser.parse(open('../test/instructions2.txt'))
-
-    import time
-
-    time.sleep(0.5)
-
-    from tigr.shell.shell import Shell
-
-    Shell(drawer).cmdloop()
+# if __name__ == '__main__':
+#
+#     from tigr.drawer.drawer import Drawer
+#     if 1:
+#         from tigr.drawer.turtle_worker import TurtleWorker as Worker
+#     else:
+#         from tigr.drawer.tkinter_worker import TkinterWorker as Worker
+#
+#     drawer = Drawer(Worker())
+#     parser = RegexParser(drawer)
+#     parser.parse(open('../test/instructions2.txt'))
+#
+#     import time
+#
+#     time.sleep(0.5)
+#
+#     from tigr.shell.shell import Shell
+#
+#     Shell(drawer).cmdloop()
