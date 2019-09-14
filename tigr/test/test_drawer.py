@@ -21,6 +21,8 @@ class TestCaseDrawer(unittest.TestCase):
 		self.o.select_pen(2)
 		self.assertTrue(self.o.worker.pencolor() == 'black')
 		self.assertTrue(self.o.worker.pensize() == 2)
+		r = self.o.select_pen(100)
+		self.assertFalse(r)
 
 	def test_pen_down(self):
 		self.o.pen_down()
@@ -38,11 +40,11 @@ class TestCaseDrawer(unittest.TestCase):
 		self.o.pensize(5)
 		self.assertTrue(self.o.worker.pensize() == 5)
 
-	def go_along(self):
+	def test_go_along(self):
 		self.o.worker.setposition(400, 300)
 		self.o.worker.setheading(90)
 		self.o.go_along(100)
-		self.assertTrue(self.o.worker.pos() == (500, 200))
+		self.assertTrue(self.o.worker.pos() == (500, 300))
 
 	def test_go_down(self):
 		self.o.worker.setposition(400, 300)

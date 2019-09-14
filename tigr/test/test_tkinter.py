@@ -33,6 +33,9 @@ class TestCaseTkinterWorker(unittest.TestCase):
         self.assertTrue(self.o.pos['y'] == 100)
 
     def test_reset(self):
+        self.o.goto(*self.o.home_pos)
+        self.o.setheading(0)
+        self.o.forward(100)
         self.o.reset()
         self.assertTrue(self.o.pos['x'] == 400)
         self.assertTrue(self.o.pos['y'] == 300)
@@ -51,6 +54,10 @@ class TestCaseTkinterWorker(unittest.TestCase):
         self.o.setheading(90)
         self.o.forward(100)
         self.assertTrue(int(self.o.pos['y']) == self.o.home_pos[1] - 100)
+        self.o.goto(*self.o.home_pos)
+        self.o.penup()
+        self.o.forward(-100)
+        self.assertTrue(int(self.o.pos['y']) == self.o.home_pos[1] + 100)
 
     def test_setheading(self):
         self.o.setheading(100)
@@ -60,6 +67,9 @@ class TestCaseTkinterWorker(unittest.TestCase):
         self.o.goto(*self.o.home_pos)
         self.o.go_down(100)
         self.assertTrue(int(self.o.pos['y']) == self.o.home_pos[1] + 100)
+        self.o.goto(*self.o.home_pos)
+        self.o.go_down(-100)
+        self.assertTrue(int(self.o.pos['y']) == self.o.home_pos[1] - 100)
 
     def test_speed(self):
         self.o.speed(3)
@@ -68,5 +78,9 @@ class TestCaseTkinterWorker(unittest.TestCase):
         wait_2 = self.o.wait
         self.assertTrue(wait_1 > wait_2)
 
-if __name__ == '__main__':
-    unittest.main()
+    def test_go_along(self):
+        self.o.goto(*self.o.home_pos)
+        self.o.go_along(100)
+        self.assertTrue(tuple(self.o.pos.values()) == (500, 300))
+        self.o.go_along(-100)
+        self.assertTrue(tuple(self.o.pos.values()) == (400, 300))
