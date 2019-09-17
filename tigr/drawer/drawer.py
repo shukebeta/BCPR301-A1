@@ -67,14 +67,6 @@ class Drawer(AbstractDrawer):
         self.worker.penup()
         debug('pen is up')
 
-    def pencolor(self, color):
-        self.worker.pencolor(color)
-        debug(f'pen color is {color}')
-
-    def pensize(self, size):
-        self.worker.pensize(size)
-        debug(f'pen size is {size}')
-
     def go_along(self, along):
         self.worker.go_along(int(along))
         debug(f'go along X: {along}')
@@ -83,21 +75,16 @@ class Drawer(AbstractDrawer):
         self.worker.go_down(int(down))
         debug(f'go along Y: {down}')
 
-    def goto(self, x, y):
-        self.worker.goto(x, y)
-
-    def forward(self, distance):
-        self.worker.forward(distance)
-        debug(f'go along {distance} with direction {self.worker.heading}')
-
     def draw_line(self, direction, distance):
         self.worker.draw_line(int(direction), int(distance))
         debug(f'draw a line with length: {distance}, direction: {direction} degree.' )
 
-    def reset(self):
-        self.worker.reset()
+    def __getattr__(self, method_name):
+        def func(*args, **kwargs):
+            self._call_method(method_name, *args, **kwargs)
+        return func
 
-    def bye(self):
-        self.worker.bye()
+    def _call_method(self, method_name, *args, **kwargs):
+        getattr(self.worker, method_name)(*args, **kwargs)
 
 
