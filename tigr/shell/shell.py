@@ -1,5 +1,6 @@
 import cmd
 import os
+import sys
 
 
 class Shell(cmd.Cmd):
@@ -10,23 +11,6 @@ class Shell(cmd.Cmd):
         self.drawer = drawer
         self.prompt = 'current drawer: ' + drawer.worker.name + '> '
         super().__init__()
-        self.alias_list = {
-            'quit': self.do_bye,
-            'd': self.do_pendown,
-            'u': self.do_penup,
-            'l': self.do_draw_line,
-            'g': self.do_goto,
-            'p': self.do_select_pen,
-            'x': self.do_go_along,
-            'y': self.do_go_down,
-        }
-
-        self.heading_dict = {
-            'n': 90,
-            's': 270,
-            'e': 0,
-            'w': 180,
-        }
 
         self.path_file = ''
         self.recording = False
@@ -53,7 +37,7 @@ class Shell(cmd.Cmd):
         if cmd:
             cmd = cmd.lower()
             if self._is_invalid_command(cmd, arg):
-                return f'Invalid command: {line}', '', line
+                return f'Invalid command at line {sys._getframe().f_lineno}: {line}', '', line
         return cmd, arg, line
 
     def _is_invalid_command(self, cmd,  arg):
@@ -66,21 +50,22 @@ class Shell(cmd.Cmd):
     def default(self, line):
         try:
             cmd, arg, line = self.parseline(line)
-            if cmd in self.alias_list:
-                return self.alias_list[cmd](arg)
-            elif cmd in ['n', 's', 'e', 'w']:
-                arg = f'{self.heading_dict[cmd]} {arg}'
-                self.do_draw_line(arg)
-            else:
-                # process EOF
-                if line.upper() == 'EOF':
-                    import time
-                    time.sleep(0.5)
-                    raise SystemExit
-                # getattr(self, f'do_{cmd}')(arg)
+            if cmd == 'quit':
+                return self.do_bye(arg)
+
+            arguments = list(parse_int(arg))
+            # process EOF
+            if line.upper() == 'EOF':
+                import time
+                time.sleep(0.5)
+                raise SystemExit
+            result = self.drawer.do_draw_command(cmd, arguments)
+            if result == False:
                 super().default(line)
+            else:
+                return result
         except Exception as e:
-            print(f'Invalid command {line}')
+            print(f'Invalid command at line {sys._getframe().f_lineno}: {line}')
 
     def emptyline(self):
         pass
@@ -140,13 +125,6 @@ class Shell(cmd.Cmd):
         print(f'Thank you for using {self.drawer.worker.name}')
         return True
 
-    # def __getattr__(self, item):
-    #     alias = {
-    #         'do_quit': self.do_bye
-    #     }
-    #     if item in alias:
-    #         return alias[item]
-
    # ----- record and playback -----
     def do_record(self, arg):
         """Save future commands to filename:  RECORD rose.cmd"""
@@ -191,12 +169,15 @@ class Shell(cmd.Cmd):
             self.file.close()
             self.file = None
 
+
 def parse(arg):
-    'Convert a series of zero or more numbers to an argument tuple'
+    """Convert a series of zero or more numbers to an argument tuple"""
     return arg.split()
+
 
 def parse_int(arg):
     return map(int, arg.split())
+
 
 if __name__ == '__main__':
     from tigr.drawer.drawer import Drawer
