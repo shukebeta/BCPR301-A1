@@ -8,10 +8,3 @@ omit =
 exclude_lines =
 # drawer / worker
     def bye
-
-# regex parser
-
-# peg parser
-    class TigrVisitor
-# prompt source reader
-    self.cmdloop
