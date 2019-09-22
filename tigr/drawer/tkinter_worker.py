@@ -164,6 +164,8 @@ class TkinterWorker(tk.Tk):
         self.update()
         self.debug()
 
+
+
     def _calc_target_pos(self, direction, length):
         return (self.pos['x'] + math.sin(math.radians(direction)) * length,
                 self.pos['y'] + math.cos(math.radians(direction)) * length)
@@ -171,5 +173,3 @@ class TkinterWorker(tk.Tk):
     @property
     def heading(self):
         return self._heading - 90
-
-

@@ -85,6 +85,33 @@ class Drawer(AbstractDrawer):
         return func
 
     def _call_method(self, method_name, *args, **kwargs):
-        getattr(self.worker, method_name)(*args, **kwargs)
+        return getattr(self.worker, method_name)(*args, **kwargs)
 
+    def do_draw_command(self, cmd, operand):
+        cmd = cmd.upper()
+        draw_methods = {
+            'D': self.pen_down,
+            'U': self.pen_up,
+            'G': self.goto,
+            'N': self.draw_line,
+            'S': self.draw_line,
+            'W': self.draw_line,
+            'E': self.draw_line,
+            'P': self.select_pen,
+            'X': self.go_along,
+            'Y': self.go_down,
+            'L': self.draw_line,
+        }
+        draw_degrees = {
+            'N': 90,
+            'S': 270,
+            'E': 0,
+            'W': 180,
+        }
+
+        if cmd in draw_degrees:
+            operand.insert(0, draw_degrees[cmd])
+        if cmd in draw_methods:
+            return draw_methods[cmd](*operand)
+        return False
 
