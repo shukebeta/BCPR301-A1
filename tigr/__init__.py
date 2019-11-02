@@ -1,3 +1,6 @@
+import os
+os.environ['TK_SILENCE_DEPRECATION'] = '1'
+
 
 def main(arguments):
     # default interactive mode
