@@ -1,4 +1,4 @@
-from tigr.tigr_interface import AbstractDrawer
+from tigr.drawer.abstract_drawer import AbstractDrawer
 
 import logging, sys
 logging.basicConfig(stream=sys.stderr, level=logging.CRITICAL)

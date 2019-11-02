@@ -1,4 +1,4 @@
-from tigr.tigr_interface import AbstractSourceReader
+from tigr.reader.abstract_reader import AbstractSourceReader
 
 
 class SourceReader(AbstractSourceReader):

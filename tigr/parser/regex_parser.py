@@ -1,4 +1,4 @@
-from tigr.tigr_interface import AbstractParser
+from tigr.parser.abstract_parser import AbstractParser
 import re
 
 

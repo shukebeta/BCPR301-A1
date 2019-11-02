@@ -1,4 +1,7 @@
-from tigr_interface import AbstractDrawer, AbstractParser, AbstractSourceReader
+from tigr.reader.abstract_reader import AbstractSourceReader
+from tigr.parser.abstract_parser import AbstractParser
+from tigr.drawer.abstract_drawer import AbstractDrawer
+
 
 
 """These implementations should be replaced,
