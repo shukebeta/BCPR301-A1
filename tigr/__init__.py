@@ -1,5 +1,9 @@
 import os
+
+from tigr.drawer.concrete_worker_factory import ConcreteWorkerFactory
+
 os.environ['TK_SILENCE_DEPRECATION'] = '1'
+
 
 
 def main(arguments):
@@ -12,15 +16,14 @@ def main(arguments):
     from tigr.drawer.drawer import Drawer
 
     if arguments['--engine'] != 'turtle':
-        from tigr.drawer.tkinter_worker import TkinterWorker as Worker
+        worker = ConcreteWorkerFactory().create_tkinter_worker()
     else:
-        from tigr.drawer.turtle_worker import TurtleWorker as Worker
+        worker = ConcreteWorkerFactory().create_turtle_worker()
 
-    worker = Worker(
-        speed=int(arguments['--speed']),
-        pencolor=arguments['--pencolor'],
-        pensize=arguments['--pensize'],
-    )
+    worker.speed(int(arguments['--speed']))
+    worker.pencolor(arguments['--pencolor'])
+    worker.pensize(arguments['--pensize'])
+
     drawer = Drawer(worker)
     if len(arguments['FILES']) > 0:
         if arguments['--parser'] == 'regex':
