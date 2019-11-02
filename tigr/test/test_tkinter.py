@@ -72,11 +72,9 @@ class TestCaseTkinterWorker(unittest.TestCase):
         self.assertTrue(int(self.o.pos['y']) == self.o.home_pos[1] - 100)
 
     def test_speed(self):
-        self.o.speed(3)
-        wait_1 = self.o.wait
-        self.o.speed(4)
-        wait_2 = self.o.wait
-        self.assertTrue(wait_1 > wait_2)
+        speed_1 = self.o.speed(3)
+        speed_2 = self.o.speed(4)
+        self.assertTrue(speed_1  < speed_2)
 
     def test_go_along(self):
         self.o.goto(*self.o.home_pos)
