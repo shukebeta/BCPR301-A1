@@ -1,94 +1,61 @@
-"""
->>> from tigr.drawer import tkinter_worker
->>> tw = tkinter_worker.TkinterWorker(speed=6, pencolor='black', pensize=2)
->>> tw.init_config
-{'speed': 6, 'pencolor': 'black', 'pensize': 2}
->>> tw._pencolor
-'black'
->>> tw._pensize
-2
->>> tw.pendown()
->>> tw._pendown
-True
->>> tw.penup()
->>> tw._pendown
-False
->>> tw.pensize(9)
->>> tw._pensize
-9
->>> tw.setheading(180)
->>> tw._heading
-270
->>> tw.goto(100,100)
->>> tw.pos()
-Traceback (most recent call last):
-  File "<input>", line 1, in <module>
-TypeError: 'dict' object is not callable
->>> tw.pos
-{'x': 100, 'y': 100}
->>> tw.goto(200,100)
->>> tw.pos
-{'x': 200, 'y': 100}
->>> tw.speed(6)
->>> tw.wait
-0.16666666666666666
->>> tw.speed(8)
->>> tw.wait
-0.125
-"""
-
+from tigr.drawer.abstract_worker import AbstractWorker
 import tkinter as tk
 import math
 import time
 
 
-class TkinterWorker(tk.Tk):
+class TkinterWorker(AbstractWorker):
     name = 'tkinter'
+
     def __init__(self, speed=6, pencolor='black', pensize=2):
-        super().__init__()
+        super().__init__(speed, pencolor, pensize)
+        self.tko = tk.Tk()
+        self.tko.title("Tkinter drawer")
+
         self.init_config = {
             'speed': speed,
             'pencolor': pencolor,
             'pensize': pensize
         }
-        self.title("Tkinter drawer")
-        self.geometry("800x600")
+        self.tko.geometry("800x600")
+        self.canvas = tk.Canvas(self.tko, width=800, height=600)
+        self.canvas.pack(side=tk.TOP, fill=tk.X)
+
         self._pencolor = str(pencolor)
         self._pensize = int(pensize)
-        self.speed(int(speed))
 
-        self.canvas = tk.Canvas(self, width=800, height=600)
-        self.canvas.pack(side=tk.TOP, fill=tk.X)
+        self._wait = 0
+        self.speed(int(speed))
 
         self.home_pos = (400, 300)
         self.pos = {
             'x': 400,
             'y': 300
         }
+
         self._pendown = True
+        self._heading = 90
         self.setheading(0)
         self.draw_history = []
 
     def reset(self):
-        for id in self.draw_history:
-            self.canvas.after(0, self.canvas.delete, id)
+        for draw_id in self.draw_history:
+            self.canvas.after(0, self.canvas.delete, draw_id)
         self.draw_history = []
         self._pencolor = self.init_config['pencolor']
         self._pensize = int(self.init_config['pensize'])
         self.speed(int(self.init_config['speed']))
         self.goto(*self.home_pos)
-        self.update()
+        self.__update()
 
     def setheading(self, direction):
         self._heading = direction + 90
 
     def penup(self):
         self._pendown = False
-        self.debug()
 
     def pendown(self):
         self._pendown = True
-        self.debug()
 
     def pensize(self, size):
         self._pensize = int(size)
@@ -99,7 +66,6 @@ class TkinterWorker(tk.Tk):
         else:
             self._heading = 180
         self.forward(abs(length))
-        self.debug()
 
     def forward(self, length):
         x, y = self._calc_target_pos(self._heading, length)
@@ -108,15 +74,13 @@ class TkinterWorker(tk.Tk):
         else:
             self.goto(x, y)
 
-        self.update()
-        self.debug()
+        self.__update()
 
     def goto(self, x, y):
         self.pos['x'] = x
         self.pos['y'] = y
 
-        self.update()
-        self.debug()
+        self.__update()
 
     def go_along(self, along):
         if along > 0:
@@ -130,19 +94,17 @@ class TkinterWorker(tk.Tk):
 
     def speed(self, speed):
         wait = 1 / speed
-        if speed <= 0: wait = 1
-        self.wait = wait
+        if speed <= 0:
+            wait = 1
+        self._wait = wait
+        return speed
 
     def pencolor(self, pencolor):
         self._pencolor = pencolor
 
-    def debug(self):
-        # print(self.pos)
-        pass
-
-    def update(self):
-        super().update()
-        time.sleep(self.wait)
+    def __update(self):
+        self.tko.update()
+        time.sleep(self._wait)
 
     def draw_line(self, direction, distance):
         # to get same behaviour as turtle
@@ -156,13 +118,11 @@ class TkinterWorker(tk.Tk):
         else:
             self._draw_line(x, y)
 
-
     def _draw_line(self, x, y):
-        id = self.canvas.create_line(self.pos['x'], self.pos['y'], x, y, fill=self._pencolor, width=self._pensize)
-        self.draw_history.append(id)
+        draw_id = self.canvas.create_line(self.pos['x'], self.pos['y'], x, y, fill=self._pencolor, width=self._pensize)
+        self.draw_history.append(draw_id)
         self.goto(x, y)
-        self.update()
-        self.debug()
+        self.__update()
 
     def _calc_target_pos(self, direction, length):
         return (self.pos['x'] + math.sin(math.radians(direction)) * length,
@@ -171,5 +131,3 @@ class TkinterWorker(tk.Tk):
     @property
     def heading(self):
         return self._heading - 90
-
-

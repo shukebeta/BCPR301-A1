@@ -40,11 +40,11 @@ class TestCaseTurtleWorker(unittest.TestCase):
 
 	def test_speed(self):
 		self.o.speed(3)
-		self.assertEqual(self.o.pen()['speed'], 3)
+		self.assertEqual(self.o.speed(), 3)
 		self.o.speed(100)
-		self.assertEqual(self.o.pen()['speed'], 0)
+		self.assertEqual(self.o.speed(), 0)
 		self.o.speed(-100)
-		self.assertEqual(self.o.pen()['speed'], 1)
+		self.assertEqual(self.o.speed(), 1)
 
 	def test_bye(self):
 		pass

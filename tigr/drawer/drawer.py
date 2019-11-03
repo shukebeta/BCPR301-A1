@@ -1,4 +1,4 @@
-from tigr.tigr_interface import AbstractDrawer
+from tigr.drawer.abstract_drawer import AbstractDrawer
 
 import logging, sys
 logging.basicConfig(stream=sys.stderr, level=logging.CRITICAL)
@@ -6,98 +6,67 @@ debug = logging.debug
 
 
 class Drawer(AbstractDrawer):
-    pen_list =[
-        {
-            'pencolor': 'black',
-            'pensize': 1
-        },
-        {
-            'pencolor': 'black',
-            'pensize': 2
-        },
-        {
-            'pencolor': 'black',
-            'pensize': 3
-        },
-        {
-            'pencolor': 'red',
-            'pensize': 1
-        },
-        {
-            'pencolor': 'red',
-            'pensize': 2
-        },
-        {
-            'pencolor': 'red',
-            'pensize': 3
-        },
-        {
-            'pencolor': 'blue',
-            'pensize': 1
-        },
-        {
-            'pencolor': 'blue',
-            'pensize': 2
-        },
-        {
-            'pencolor': 'blue',
-            'pensize': 3
-        },
-    ]
 
     def __init__(self, worker):
         self.worker = worker
         super().__init__()
 
-    def select_pen(self, pen):
-        """pen should be a integer from 1 to 9, every pen has a pencolor and pensize attribute
-        """
-        pen = int(pen)
-        if pen < 1 or pen > 9:
-            debug(f'invalid pen: {pen}, should be a integer between 1 and 9')
-            return False
-        self.pensize(self.pen_list[pen - 1]['pensize'])
-        self.pencolor(self.pen_list[pen - 1]['pencolor'])
+    def select_pen(self, pen_num):
+        return self.worker.select_pen(pen_num)
 
     def pen_down(self):
-        self.worker.pendown()
+        return self.worker.pendown()
         debug('pen is down')
 
     def pen_up(self):
-        self.worker.penup()
+        return self.worker.penup()
         debug('pen is up')
 
-    def pencolor(self, color):
-        self.worker.pencolor(color)
-        debug(f'pen color is {color}')
-
-    def pensize(self, size):
-        self.worker.pensize(size)
-        debug(f'pen size is {size}')
-
     def go_along(self, along):
-        self.worker.go_along(int(along))
+        return self.worker.go_along(int(along))
         debug(f'go along X: {along}')
 
     def go_down(self, down):
-        self.worker.go_down(int(down))
+        return self.worker.go_down(int(down))
         debug(f'go along Y: {down}')
 
-    def goto(self, x, y):
-        self.worker.goto(x, y)
-
-    def forward(self, distance):
-        self.worker.forward(distance)
-        debug(f'go along {distance} with direction {self.worker.heading}')
-
     def draw_line(self, direction, distance):
-        self.worker.draw_line(int(direction), int(distance))
+        return self.worker.draw_line(int(direction), int(distance))
         debug(f'draw a line with length: {distance}, direction: {direction} degree.' )
 
-    def reset(self):
-        self.worker.reset()
+    def __getattr__(self, method_name):
+        def func(*args, **kwargs):
+            return self._call_method(method_name, *args, **kwargs)
+        return func
 
-    def bye(self):
-        self.worker.bye()
+    def _call_method(self, method_name, *args, **kwargs):
+        return getattr(self.worker, method_name)(*args, **kwargs)
 
+    def do_draw_command(self, cmd, operand):
+        cmd = cmd.upper()
+        draw_methods = {
+            'D': self.pen_down,
+            'U': self.pen_up,
+            'G': self.goto,
+            'N': self.draw_line,
+            'S': self.draw_line,
+            'W': self.draw_line,
+            'E': self.draw_line,
+            'P': self.select_pen,
+            'X': self.go_along,
+            'Y': self.go_down,
+            'L': self.draw_line,
+        }
+        draw_degrees = {
+            'N': 90,
+            'S': 270,
+            'E': 0,
+            'W': 180,
+        }
+
+        if cmd in draw_degrees:
+            operand.insert(0, draw_degrees[cmd])
+        if cmd in draw_methods:
+            return draw_methods[cmd](*operand)
+        return False
 
