@@ -1,7 +1,4 @@
 from abc import ABC, abstractmethod
-from tigr.drawer.tkinter_worker import TkinterWorker
-from tigr.drawer.turtle_worker import TurtleWorker
-
 
 class AbstractWorkerFactory(ABC):
     """
@@ -13,9 +10,5 @@ class AbstractWorkerFactory(ABC):
     another.
     """
     @abstractmethod
-    def create_turtle_worker(self) -> TurtleWorker:
-        pass
-
-    @abstractmethod
-    def create_tkinter_worker(self) -> TkinterWorker:
+    def create_worker(self):
         pass

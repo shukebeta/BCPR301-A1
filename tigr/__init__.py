@@ -1,6 +1,7 @@
 import os
 
-from tigr.drawer.concrete_worker_factory import ConcreteWorkerFactory
+from tigr.drawer.tkinter_worker_factory import TkInterWorkerFactory
+from tigr.drawer.turtle_worker_factory import TurtleWorkerFactory
 
 os.environ['TK_SILENCE_DEPRECATION'] = '1'
 
@@ -16,9 +17,9 @@ def main(arguments):
     from tigr.drawer.drawer import Drawer
 
     if arguments['--engine'] != 'turtle':
-        worker = ConcreteWorkerFactory().create_tkinter_worker()
+        worker = TkInterWorkerFactory().create_worker()
     else:
-        worker = ConcreteWorkerFactory().create_turtle_worker()
+        worker = TurtleWorkerFactory().create_worker()
 
     worker.speed(int(arguments['--speed']))
     worker.pencolor(arguments['--pencolor'])
