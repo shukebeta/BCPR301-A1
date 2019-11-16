@@ -1,12 +1,14 @@
 import unittest
-import time
-from tigr.drawer.turtle_worker import TurtleWorker
+from tigr.drawer.turtle_worker_factory import TurtleWorkerFactory
 
 
 class TestCaseTurtleWorker(unittest.TestCase):
 
 	def setUp(self):
-		self.o = TurtleWorker(speed=6, pencolor='black', pensize=2)
+		self.o = TurtleWorkerFactory().create_worker()
+		self.o.speed(6)
+		self.o.pencolor('black')
+		self.o.pensize(2)
 
 	def test_go_down(self):
 		self.o.setposition(400, 300)
@@ -23,18 +25,18 @@ class TestCaseTurtleWorker(unittest.TestCase):
 		self.assertTrue(self.o.pos() == (400, 300))
 
 	def test_draw_line(self):
-		self.o.penup()
+		self.o.pen_up()
 		self.o.draw_line(270, 100)
 		self.assertTrue(self.o.isdown())
-		self.o.penup()
+		self.o.pen_up()
 		self.o.draw_line(90, 100)
 		self.assertTrue(self.o.isdown())
 
 	def test_goto(self):
-		self.o.pendown()
+		self.o.pen_down()
 		self.o.goto(400, 200)
 		self.assertTrue(self.o.pos() == (0, 100))
-		self.o.penup()
+		self.o.pen_up()
 		self.o.goto(400, 400)
 		self.assertTrue(self.o.pos() == (0, -100))
 

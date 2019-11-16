@@ -1,11 +1,13 @@
 import unittest
-from tigr.drawer.tkinter_worker import TkinterWorker
-
+from tigr.drawer.tkinter_worker_factory import TkInterWorkerFactory
 
 class TestCaseTkinterWorker(unittest.TestCase):
 
     def setUp(self):
-        self.o = TkinterWorker(speed=8, pencolor='red', pensize=3)
+        self.o = TkInterWorkerFactory().create_worker()
+        self.o.speed(8)
+        self.o.pencolor('red')
+        self.o.pensize(3)
 
     def test_pencolor(self):
         self.o.pencolor('red')
@@ -20,10 +22,10 @@ class TestCaseTkinterWorker(unittest.TestCase):
         self.assertEqual(self.o._pensize, 6)
 
     def test_draw_line(self):
-        self.o.penup()
+        self.o.pen_up()
         self.o.draw_line(45, 100)
         self.assertFalse(self.o._pendown)
-        self.o.pendown()
+        self.o.pen_down()
         self.o.draw_line(90, 100)
         self.assertTrue(self.o._pendown)
 
@@ -41,9 +43,9 @@ class TestCaseTkinterWorker(unittest.TestCase):
         self.assertTrue(self.o.pos['y'] == 300)
 
     def test_pendown(self):
-        self.o.penup()
+        self.o.pen_up()
         self.assertFalse(self.o._pendown)
-        self.o.pendown()
+        self.o.pen_down()
         self.assertTrue(self.o._pendown)
 
     def test_forward(self):
@@ -55,7 +57,7 @@ class TestCaseTkinterWorker(unittest.TestCase):
         self.o.forward(100)
         self.assertTrue(int(self.o.pos['y']) == self.o.home_pos[1] - 100)
         self.o.goto(*self.o.home_pos)
-        self.o.penup()
+        self.o.pen_up()
         self.o.forward(-100)
         self.assertTrue(int(self.o.pos['y']) == self.o.home_pos[1] + 100)
 

@@ -61,22 +61,22 @@ class RegexParser(AbstractParser):
         return self.drawer.do_draw_command(command['cmd'], command['operand'])
 
 
-# if __name__ == '__main__':
-#
-#     from tigr.drawer.drawer import Drawer
-#     if 1:
-#         from tigr.drawer.turtle_worker import TurtleWorker as Worker
-#     else:
-#         from tigr.drawer.tkinter_worker import TkinterWorker as Worker
-#
-#     drawer = Drawer(Worker())
-#     parser = RegexParser(drawer)
-#     parser.parse(open('../test/instructions2.txt'))
-#
-#     import time
-#
-#     time.sleep(0.5)
-#
-#     from tigr.shell.shell import Shell
-#
-#     Shell(drawer).cmdloop()
+if __name__ == '__main__':
+
+    from tigr.drawer.drawer import Drawer
+    if 1:
+        from tigr.drawer.turtle_worker_factory import TurtleWorkerFactory as Factory
+    else:
+        from tigr.drawer.tkinter_worker_factory import TkInterWorkerFactory as Factory
+
+    drawer = Drawer(Factory().create_worker())
+    parser = RegexParser(drawer)
+    parser.parse(open('../test/instructions2.txt'))
+
+    import time
+
+    time.sleep(0.5)
+
+    from tigr.shell.shell import Shell
+
+    Shell(drawer).cmdloop()

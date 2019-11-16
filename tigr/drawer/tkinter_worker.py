@@ -51,10 +51,10 @@ class TkinterWorker(AbstractWorker):
     def setheading(self, direction):
         self._heading = direction + 90
 
-    def penup(self):
+    def pen_up(self):
         self._pendown = False
 
-    def pendown(self):
+    def pen_down(self):
         self._pendown = True
 
     def pensize(self, size):
@@ -112,9 +112,9 @@ class TkinterWorker(AbstractWorker):
         x, y = self._calc_target_pos(self._heading, distance)
 
         if not self._pendown:
-            self.pendown()
+            self.pen_down()
             self._draw_line(x, y)
-            self.penup()
+            self.pen_up()
         else:
             self._draw_line(x, y)
 

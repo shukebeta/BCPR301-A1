@@ -15,11 +15,11 @@ class Drawer(AbstractDrawer):
         return self.worker.select_pen(pen_num)
 
     def pen_down(self):
-        return self.worker.pendown()
+        return self.worker.pen_down()
         debug('pen is down')
 
     def pen_up(self):
-        return self.worker.penup()
+        return self.worker.pen_up()
         debug('pen is up')
 
     def go_along(self, along):

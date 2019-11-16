@@ -181,5 +181,5 @@ def parse_int(arg):
 
 if __name__ == '__main__':
     from tigr.drawer.drawer import Drawer
-    from tigr.drawer.tkinter_worker import TkinterWorker
-    Shell(Drawer(TkinterWorker())).cmdloop()
+    from tigr.drawer.tkinter_worker_factory import TkInterWorkerFactory
+    Shell(Drawer(TkInterWorkerFactory().create_worker())).cmdloop()

@@ -23,13 +23,13 @@ class TurtleWorker(AbstractWorker):
     def pencolor(self, *args):
         return self.turtle.pencolor(*args)
 
-    def pendown(self):
+    def pen_down(self):
         return self.turtle.pendown()
 
     def pensize(self, *args):
         return self.turtle.pensize(*args)
 
-    def penup(self):
+    def pen_up(self):
         return self.turtle.penup()
 
     def reset(self):
@@ -52,23 +52,26 @@ class TurtleWorker(AbstractWorker):
         self.forward(abs(along))
 
     def draw_line(self, direction, distance):
-        self.pendown()
+        self.pen_down()
         self.setheading(direction)
         self.forward(distance)
 
     def goto(self, x, y):
+        x, y = self._convert_x_y(x, y)
+        if self.turtle.pen()['pendown']:
+            self.pen_up()
+            self.turtle.goto(x, y)
+            self.pen_down()
+        else:
+            self.turtle.goto(x, y)
+
+    def _convert_x_y(self, x, y):
         x -= 400
         if y > 300:
             y -= 2 * y - 300
         else:
             y = 300 - y
-
-        if self.turtle.pen()['pendown']:
-            self.penup()
-            self.turtle.goto(x, y)
-            self.pendown()
-        else:
-            self.turtle.goto(x, y)
+        return (x, y)
 
     def speed(self, speed=None):
         if speed is None:

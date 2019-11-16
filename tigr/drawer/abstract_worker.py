@@ -63,11 +63,11 @@ class AbstractWorker(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def penup(self):
+    def pen_up(self):
         pass
 
     @abstractmethod
-    def pendown(self):
+    def pen_down(self):
         pass
 
     @abstractmethod
