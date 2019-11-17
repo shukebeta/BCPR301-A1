@@ -28,36 +28,6 @@ from abc import ABC, abstractmethod
 import os.path
 
 
-class ConfigType(ABC):
-    @abstractmethod
-    def do_config(self, config_file, new_arguments):
-        pass
-
-
-class InitConfig(ConfigType):
-    def do_config(self, config_file, new_arguments):
-        config1 = cp.ConfigParser()
-        config1.read(config_file)
-        for section in config1.sections():
-            for option in config1.options(section):
-                new_arguments['--' + option] = config1.get(section, option)
-                return new_arguments
-
-
-class YmlConfig(ConfigType):
-    def do_config(self, config_file, new_arguments):
-        import yaml
-        with open(config_file, 'r') as stream:
-            try:
-                config2 = yaml.safe_load(stream)
-                for section in config2:
-                    for option in config2[section]:
-                        new_arguments['--' + option] = config2[section][option]
-                        return new_arguments
-            except yaml.YAMLError as e:
-                print(e)
-
-
 class Config:
     def __init__(self):
         self.arguments = docopt(__doc__, version='Tigr 1.0')
@@ -97,13 +67,43 @@ class Config:
                 self.identify_config()
                 if self.config_type_exists:
                     self.config_type.do_config(self.config_file, self.arguments)
-
         return self.arguments
+
+
+# Abstract Strategy
+class ConfigType(ABC):
+    @abstractmethod
+    def do_config(self, config_file, new_arguments):
+        pass
+
+
+# Concrete Strategy A
+class InitConfig(ConfigType):
+    def do_config(self, config_file, new_arguments):
+        config1 = cp.ConfigParser()
+        config1.read(config_file)
+        for section in config1.sections():
+            for option in config1.options(section):
+                new_arguments['--' + option] = config1.get(section, option)
+                return new_arguments
+
+
+# Concrete Strategy B
+class YmlConfig(ConfigType):
+    def do_config(self, config_file, new_arguments):
+        import yaml
+        with open(config_file, 'r') as stream:
+            try:
+                config2 = yaml.safe_load(stream)
+                for section in config2:
+                    for option in config2[section]:
+                        new_arguments['--' + option] = config2[section][option]
+                        return new_arguments
+            except yaml.YAMLError as e:
+                print(e)
 
 
 if __name__ == '__main__':
     import tigr
     config = Config()
     tigr.main(config.do())
-
-
