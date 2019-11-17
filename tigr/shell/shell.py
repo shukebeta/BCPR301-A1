@@ -56,12 +56,11 @@ class Shell(cmd.Cmd):
                 return f'Invalid command: {line}', '', line
         return cmd, arg, line
 
-    def _is_invalid_command(self, cmd,  arg):
+    def _is_invalid_command(self, cmd, arg):
         return cmd in ['u', 'd', 'penup', 'pendown', 'pensize', 'reset', 'quit', 'bye'] and arg != '' or \
                cmd in ['l', 'g', 'goto', 'draw_lne'] and len(arg.split()) != 2 or \
                cmd in ['n', 's', 'w', 'e', 'x', 'y', 'select_pen', 'go_along', 'go_down', 'forward',
                        'record', 'playback'] and len(arg.split()) != 1
-
 
     def default(self, line):
         try:
@@ -79,7 +78,7 @@ class Shell(cmd.Cmd):
                     raise SystemExit
                 # getattr(self, f'do_{cmd}')(arg)
                 super().default(line)
-        except Exception as e:
+        except Exception:
             print(f'Invalid command {line}')
 
     def emptyline(self):
@@ -147,7 +146,7 @@ class Shell(cmd.Cmd):
     #     if item in alias:
     #         return alias[item]
 
-   # ----- record and playback -----
+    # ----- record and playback -----
     def do_record(self, arg):
         """Save future commands to filename:  RECORD rose.cmd"""
         path_file = arg.strip()
@@ -191,14 +190,18 @@ class Shell(cmd.Cmd):
             self.file.close()
             self.file = None
 
+
 def parse(arg):
-    'Convert a series of zero or more numbers to an argument tuple'
+    """Convert a series of zero or more numbers to an argument tuple"""
     return arg.split()
+
 
 def parse_int(arg):
     return map(int, arg.split())
 
+
 if __name__ == '__main__':
     from tigr.drawer.drawer import Drawer
     from tigr.drawer.tkinter_worker import TkinterWorker
+
     Shell(Drawer(TkinterWorker())).cmdloop()
