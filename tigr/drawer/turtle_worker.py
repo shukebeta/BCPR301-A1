@@ -62,4 +62,3 @@ class TurtleWorker(Turtle):
 
     def bye(self):
         time.sleep(0.5)
-
