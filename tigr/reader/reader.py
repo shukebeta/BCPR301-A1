@@ -1,5 +1,6 @@
 from tigr.tigr_interface import AbstractSourceReader
 
+
 class SourceReader(AbstractSourceReader):
     """ responsible for providing source text for parsing and drawing
         Initiates the Draw use-case.

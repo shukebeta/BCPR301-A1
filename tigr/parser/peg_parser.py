@@ -1,13 +1,14 @@
 from parsimonious.grammar import Grammar
 from tigr.parser.regex_parser import RegexParser
 from tigr.parser.visitor import Visitor
-import logging, sys
+import logging
+import sys
 logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 
 class PEGParser(RegexParser):
-    grammer = Grammar(
+    grammar = Grammar(
         r"""
         expr    = zero / one / two / comment
         zero    = ws* ~'([DU])'i comment?
@@ -28,7 +29,7 @@ class PEGParser(RegexParser):
             if line == '':
                 continue
             try:
-                cmd_tree = self.grammer.parse(line)
+                cmd_tree = self.grammar.parse(line)
                 cmd = self.visitor.visit(cmd_tree)
                 if cmd[0] == '#':
                     print(f'comment found: "{"".join(cmd)}"')
@@ -48,8 +49,6 @@ if __name__ == '__main__':
     from tigr.drawer.drawer import Drawer
     if 1:
         from tigr.drawer.turtle_worker import TurtleWorker as Worker
-    else:
-        from tigr.drawer.tkinter_worker import TkinterWorker as Worker
 
     drawer = Drawer(Worker())
     parser = PEGParser(drawer)
