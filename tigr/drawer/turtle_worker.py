@@ -4,6 +4,7 @@ import time
 
 class TurtleWorker(Turtle):
     name = 'turtle'
+
     def __init__(self, speed=6, pencolor='black', pensize=2):
         super().__init__()
         self.__name__ = 'turtle'
@@ -33,7 +34,7 @@ class TurtleWorker(Turtle):
         self.setheading(direction)
         self.forward(distance)
 
-    def goto(self, x, y):
+    def goto(self, x=400, y=300):
         x -= 400
         if y > 300:
             y -= 2 * y - 300
@@ -47,7 +48,7 @@ class TurtleWorker(Turtle):
         else:
             super().goto(x, y)
 
-    def speed(self, speed):
+    def speed(self, speed=None):
         speed = int(speed)
         if speed > 10:
             speed = 0
