@@ -1,12 +1,13 @@
 from tigr.tigr_interface import AbstractDrawer
 
-import logging, sys
+import logging
+import sys
 logging.basicConfig(stream=sys.stderr, level=logging.CRITICAL)
 debug = logging.debug
 
 
 class Drawer(AbstractDrawer):
-    pen_list =[
+    pen_list = [
         {
             'pencolor': 'black',
             'pensize': 1
@@ -92,12 +93,10 @@ class Drawer(AbstractDrawer):
 
     def draw_line(self, direction, distance):
         self.worker.draw_line(int(direction), int(distance))
-        debug(f'draw a line with length: {distance}, direction: {direction} degree.' )
+        debug(f'draw a line with length: {distance}, direction: {direction} degree.')
 
     def reset(self):
         self.worker.reset()
 
     def bye(self):
         self.worker.bye()
-
-
