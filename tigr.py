@@ -23,38 +23,87 @@ If an option is found in config file and command line arguments at the same time
 this program will use the value from the ini file.
 """
 from docopt import docopt
+import configparser as cp
+from abc import ABC, abstractmethod
+import os.path
+
+
+class ConfigType(ABC):
+    @abstractmethod
+    def do_config(self, config_file, new_arguments):
+        pass
+
+
+class InitConfig(ConfigType):
+    def do_config(self, config_file, new_arguments):
+        config1 = cp.ConfigParser()
+        config1.read(config_file)
+        for section in config1.sections():
+            for option in config1.options(section):
+                new_arguments['--' + option] = config1.get(section, option)
+                return new_arguments
+
+
+class YmlConfig(ConfigType):
+    def do_config(self, config_file, new_arguments):
+        import yaml
+        with open(config_file, 'r') as stream:
+            try:
+                config2 = yaml.safe_load(stream)
+                for section in config2:
+                    for option in config2[section]:
+                        new_arguments['--' + option] = config2[section][option]
+                        return new_arguments
+            except yaml.YAMLError as e:
+                print(e)
+
+
+class Config:
+    def __init__(self):
+        self.arguments = docopt(__doc__, version='Tigr 1.0')
+        self.config_file = self.arguments['--config']
+        self.config_type = None
+        self.config_exist = 0
+        self.os_path_exists = 0
+        self.config_type_exists = 0
+
+    def check_config_exists(self):
+        if self.arguments['--config'] is not None:
+            self.config_exist = 1
+
+    def check_os_path_exists(self):
+        if os.path.exists(self.config_file):
+            self.os_path_exists = 1
+        else:
+            print(f'config file does not exist: {self.config_file}')
+
+    def identify_config(self):
+        name, ext = os.path.splitext(self.config_file)
+        if ext.lower() == '.ini':
+            self.config_type_exists = 1
+            self.config_type = InitConfig()
+        elif ext.lower() in ['.yml', '.yaml']:
+            self.config_type_exists = 1
+            self.config_type = YmlConfig()
+        else:
+            print(f'invalid config file: {self.config_file}', 'unrecognized ext name')
+
+    def do(self):
+        self.check_config_exists()
+        # print(self.config_exist)
+        if self.config_exist:
+            self.check_os_path_exists()
+            if self.os_path_exists:
+                self.identify_config()
+                if self.config_type_exists:
+                    self.config_type.do_config(self.config_file, self.arguments)
+
+        return self.arguments
 
 
 if __name__ == '__main__':
-    arguments = docopt(__doc__, version='Tigr 1.0')
-
-    if arguments['--config'] is not None:
-        import os.path
-        import configparser as cp
-        config = cp.ConfigParser()
-
-        config_file = arguments['--config']
-        if os.path.exists(config_file):
-            name, ext = os.path.splitext(config_file)
-            if ext.lower() == '.ini':
-                config.read(config_file)
-                for section in config.sections():
-                    for option in config.options(section):
-                        arguments['--' + option] = config.get(section, option)
-            elif ext.lower() in ['.yml', '.yaml']:
-                import yaml
-                with open(config_file, 'r') as stream:
-                    try:
-                        config = yaml.safe_load(stream)
-                        for section in config:
-                            for option in config[section]:
-                                arguments['--' + option] = config[section][option]
-                    except yaml.YAMLError as e:
-                        print(e)
-            else:
-                print(f'invalid config file: {config_file}', 'unrecognized ext name')
-        else:
-            print(f'config file does not exist: {config_file}')
-
     import tigr
-    tigr.main(arguments)
+    config = Config()
+    tigr.main(config.do())
+
+
