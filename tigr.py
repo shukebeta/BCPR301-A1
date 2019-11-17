@@ -28,6 +28,7 @@ from abc import ABC, abstractmethod
 import os.path
 
 
+# client
 class Config:
     def __init__(self):
         self.arguments = docopt(__doc__, version='Tigr 1.0')
@@ -58,7 +59,7 @@ class Config:
         else:
             print(f'invalid config file: {self.config_file}', 'unrecognized ext name')
 
-    def do(self):
+    def do_config(self):
         self.check_config_exists()
         # print(self.config_exist)
         if self.config_exist:
@@ -106,4 +107,4 @@ class YmlConfig(ConfigType):
 if __name__ == '__main__':
     import tigr
     config = Config()
-    tigr.main(config.do())
+    tigr.main(config.do_config())
