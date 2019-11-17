@@ -55,6 +55,10 @@ class TurtleWorker(Turtle):
             speed = 1
         super().speed(speed)
 
+    def reset(self):
+        super().reset()
+        self.goto(400, 300)
+
     def bye(self):
         time.sleep(0.5)
 

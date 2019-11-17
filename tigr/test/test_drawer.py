@@ -70,7 +70,10 @@ class TestCaseDrawer(unittest.TestCase):
 		self.assertTrue(self.o.worker.isdown())
 
 	def test_reset(self):
-		pass
+		self.o.goto(100,100)
+		self.o.reset()
+		self.assertTrue(self.o.worker.pos() == (400, 300))
 
-	def test_bye(self):
-		pass
+
+	# def test_bye(self):
+	# 	pass

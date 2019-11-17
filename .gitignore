@@ -7,6 +7,7 @@
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 .idea
+**/__pycache__/ 
 
 # User-specific stuff
 .idea/**/workspace.xml
@@ -36,7 +37,7 @@
 # since they will be recreated, and may cause churn.  Uncomment if using
 # auto-import.
 # .idea/modules.xml
-# .idea/*.iml
+#.idea/*.iml
 # .idea/modules
 # *.iml
 # *.ipr

@@ -15,8 +15,9 @@ class TestCaseTurtleWorker(unittest.TestCase):
 
 	def test_go_along(self):
 		self.o.setposition(400, 300)
-		self.o.go_down(100)
-		self.assertTrue(self.o.pos() == (400, 200))
+		self.o.setheading(0)
+		self.o.go_along(100)
+		self.assertTrue(self.o.pos() == (300, 200))
 
 	def test_draw_line(self):
 		self.o.penup()
