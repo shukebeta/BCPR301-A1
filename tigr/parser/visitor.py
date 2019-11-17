@@ -19,11 +19,9 @@ class Visitor(NodeVisitor):
         _, directive, _, p1, *_ = children
         return directive.text, p1.text
 
-
     def visit_two(self, node, children):
         _, directive, _, p1, _, p2, *_ = children
         return directive.text, p1.text, p2.text
-
 
     def visit_comment(self, node, children):
         _, prefix, comment, *_ = children

@@ -84,13 +84,12 @@ class RegexParser(AbstractParser):
             command['operand'].insert(0, self.draw_degrees[command['cmd']])
         self.draw_methods[command['cmd']](*command['operand'])
 
+
 if __name__ == '__main__':
 
     from tigr.drawer.drawer import Drawer
     if 1:
         from tigr.drawer.turtle_worker import TurtleWorker as Worker
-    else:
-        from tigr.drawer.tkinter_worker import TkinterWorker as Worker
 
     drawer = Drawer(Worker())
     parser = RegexParser(drawer)

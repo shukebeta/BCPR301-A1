@@ -62,7 +62,6 @@ class Shell(cmd.Cmd):
                cmd in ['n', 's', 'w', 'e', 'x', 'y', 'select_pen', 'go_along', 'go_down', 'forward',
                        'record', 'playback'] and len(arg.split()) != 1
 
-
     def default(self, line):
         try:
             cmd, arg, line = self.parseline(line)
@@ -140,14 +139,7 @@ class Shell(cmd.Cmd):
         print(f'Thank you for using {self.drawer.worker.name}')
         return True
 
-    # def __getattr__(self, item):
-    #     alias = {
-    #         'do_quit': self.do_bye
-    #     }
-    #     if item in alias:
-    #         return alias[item]
-
-   # ----- record and playback -----
+    # ----- record and playback -----
     def do_record(self, arg):
         """Save future commands to filename:  RECORD rose.cmd"""
         path_file = arg.strip()
@@ -191,12 +183,15 @@ class Shell(cmd.Cmd):
             self.file.close()
             self.file = None
 
+
 def parse(arg):
     'Convert a series of zero or more numbers to an argument tuple'
     return arg.split()
 
+
 def parse_int(arg):
     return map(int, arg.split())
+
 
 if __name__ == '__main__':
     from tigr.drawer.drawer import Drawer
