@@ -1,7 +1,7 @@
-from tigr.parser.template_parser import TemplateParser
+from tigr.parser.strategy_parser import StrategyParser
 
 
-class RegexParser(TemplateParser):
+class RegexParser(StrategyParser):
 
     def parse(self, file):
         self.drawer.reset()

@@ -3,7 +3,7 @@ from abc import abstractmethod
 import re
 
 
-class TemplateParser(AbstractParser):
+class StrategyParser(AbstractParser):
     pattern = r'^([DUPNESWXYGL])\s*(-?[\s\d]+)?(?:#.*)?$'
     p = re.compile(pattern, re.IGNORECASE)
 

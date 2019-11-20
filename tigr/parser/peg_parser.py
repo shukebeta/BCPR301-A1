@@ -1,5 +1,5 @@
 from parsimonious.grammar import Grammar
-from tigr.parser.template_parser import TemplateParser
+from tigr.parser.strategy_parser import StrategyParser
 from tigr.parser.visitor import Visitor
 import logging
 import sys
@@ -7,7 +7,7 @@ logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 
-class PEGParser(TemplateParser):
+class PEGParser(StrategyParser):
     grammar = Grammar(
         r"""
         expr    = zero / one / two / comment
