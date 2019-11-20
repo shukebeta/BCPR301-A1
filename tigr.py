@@ -59,7 +59,7 @@ class Config:
         else:
             print(f'invalid config file: {self.config_file}', 'unrecognized ext name')
 
-    def do_config(self):
+    def config(self):
         self.check_config_exists()
         # print(self.config_exist)
         if self.config_exist:
@@ -107,4 +107,4 @@ class YmlConfig(ConfigType):
 if __name__ == '__main__':
     import tigr
     config = Config()
-    tigr.main(config.do_config())
+    tigr.main(config.config())
