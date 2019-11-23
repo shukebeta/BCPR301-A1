@@ -3,7 +3,7 @@ import tkinter as tk
 import math
 import time
 
-
+# here's one of the concrete Adapter
 class TkinterWorker(AbstractWorker):
     name = 'tkinter'
 

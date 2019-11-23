@@ -1,6 +1,6 @@
 from abc import ABCMeta, abstractmethod
 
-
+# here's the abstract Adapter
 class AbstractWorker(metaclass=ABCMeta):
     name = ''
     pen_list =[

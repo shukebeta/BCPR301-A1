@@ -46,12 +46,15 @@ class PEGParser(RegexParser):
 if __name__ == '__main__':
 
     from tigr.drawer.drawer import Drawer
-    if 1:
-        from tigr.drawer.turtle_worker import TurtleWorker as Worker
+    from tigr.drawer.tkinter_worker_factory import TkInterWorkerFactory
+    from tigr.drawer.turtle_worker_factory import TurtleWorkerFactory
+    turtle = True
+    if turtle:
+        worker = TurtleWorkerFactory().create_worker()
     else:
-        from tigr.drawer.tkinter_worker import TkinterWorker as Worker
+        worker = TkInterWorkerFactory().create_worker()
 
-    drawer = Drawer(Worker())
+    drawer = Drawer(worker)
     parser = PEGParser(drawer)
     parser.parse(open('../test/instructions2.txt'))
 
