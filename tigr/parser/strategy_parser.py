@@ -28,7 +28,7 @@ class StrategyParser(AbstractParser):
 
     @abstractmethod
     def parse(self, file):
-        raise NotImplementedError()
+        pass
 
     def do(self, command):
         if command['cmd'] in self.draw_degrees:
