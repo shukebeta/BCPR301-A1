@@ -39,15 +39,18 @@ class ConfigType(ABC):
         self.read_file()
         return self.parse_content()
 
+    '''Primitive Operation'''
     @abstractmethod
     def read_file(self):
         pass
 
+    '''Primitive Operation'''
     @abstractmethod
     def parse_content(self):
         pass
 
 
+# Concrete A
 class IniConfig(ConfigType):
 
     def read_file(self):
@@ -62,6 +65,24 @@ class IniConfig(ConfigType):
         return self.arguments
 
 
+# Concrete B
+class YmlConfig(ConfigType):
+
+    def read_file(self):
+        import yaml
+        with open(self.config_file, 'r') as stream:
+            try:
+                self.config = yaml.safe_load(stream)
+                return self.config
+            except yaml.YAMLError as e:
+                print(e)
+                return {}
+
+    def parse_content(self):
+        for section in self.config:
+            for option in self.config[section]:
+                self.arguments['--' + option] = self.config[section][option]
+        return self.arguments
 
 
 if __name__ == '__main__':
@@ -78,13 +99,7 @@ if __name__ == '__main__':
             elif ext.lower() in ['.yml', '.yaml']:
                 import yaml
                 with open(config_file, 'r') as stream:
-                    try:
-                        config = yaml.safe_load(stream)
-                        for section in config:
-                            for option in config[section]:
-                                arguments['--' + option] = config[section][option]
-                    except yaml.YAMLError as e:
-                        print(e)
+                    config = YmlConfig(config_file, arguments).parse()
             else:
                 print(f'invalid config file: {config_file}', 'unrecognized ext name')
         else:
