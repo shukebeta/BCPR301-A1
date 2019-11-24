@@ -97,9 +97,7 @@ if __name__ == '__main__':
             if ext.lower() == '.ini':
                 config = IniConfig(config_file, arguments).parse()
             elif ext.lower() in ['.yml', '.yaml']:
-                import yaml
-                with open(config_file, 'r') as stream:
-                    config = YmlConfig(config_file, arguments).parse()
+                config = YmlConfig(config_file, arguments).parse()
             else:
                 print(f'invalid config file: {config_file}', 'unrecognized ext name')
         else:
@@ -107,4 +105,3 @@ if __name__ == '__main__':
 
     import tigr
     tigr.main(arguments)
-
