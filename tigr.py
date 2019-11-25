@@ -23,66 +23,8 @@ If an option is found in config file and command line arguments at the same time
 this program will use the value from the ini file.
 """
 from docopt import docopt
-from abc import ABC, abstractmethod
-import configparser as cp
-
-
-# Template
-class ConfigType(ABC):
-
-    def __init__(self, new_config_file, new_arguments):
-        self.config_file = new_config_file
-        self.arguments = new_arguments
-        self.config = {}
-
-    def parse(self):
-        self.read_file()
-        return self.parse_content()
-
-    '''Primitive Operation'''
-    @abstractmethod
-    def read_file(self):
-        pass
-
-    '''Primitive Operation'''
-    @abstractmethod
-    def parse_content(self):
-        pass
-
-
-# Concrete A
-class IniConfig(ConfigType):
-
-    def read_file(self):
-        self.config = cp.ConfigParser()
-        self.config.read(self.config_file)
-        return self.config.sections()
-
-    def parse_content(self):
-        for section in self.config.sections():
-            for option in self.config.options(section):
-                self.arguments['--' + option] = self.config.get(section, option)
-        return self.arguments
-
-
-# Concrete B
-class YmlConfig(ConfigType):
-
-    def read_file(self):
-        import yaml
-        with open(self.config_file, 'r') as stream:
-            try:
-                self.config = yaml.safe_load(stream)
-                return self.config
-            except yaml.YAMLError as e:
-                print(e)
-                return {}
-
-    def parse_content(self):
-        for section in self.config:
-            for option in self.config[section]:
-                self.arguments['--' + option] = self.config[section][option]
-        return self.arguments
+from tigr.config.iniConfig import IniConfig
+from tigr.config.ymlConfig import YmlConfig
 
 
 if __name__ == '__main__':
